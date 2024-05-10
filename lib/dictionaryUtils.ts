@@ -14,14 +14,17 @@ async function loadDictionary(language: string): Promise<string[]> {
 	}
 }
 
-function selectRandomLetters(words: string[], count: number = 7): string[] {
-	const allLetters = words.join("").split("");
-	const randomLetters = [];
-	for (let i = 0; i < count; i++) {
-		const randomIndex = Math.floor(Math.random() * allLetters.length);
-		randomLetters.push(allLetters[randomIndex].toUpperCase());
-	}
-	return randomLetters;
+function selectLettersFromWord(words: string[]): string[] {
+	const baseWord = words[Math.floor(Math.random() * words.length)];
+	return shuffleArray(baseWord.toUpperCase().split(""));
 }
 
-export { loadDictionary, selectRandomLetters };
+function shuffleArray(array: string[]): string[] {
+	for (let i = array.length - 1; i > 0; i--) {
+		const j = Math.floor(Math.random() * (i + 1));
+		[array[i], array[j]] = [array[j], array[i]];
+	}
+	return array;
+}
+
+export { loadDictionary, selectLettersFromWord, shuffleArray };
