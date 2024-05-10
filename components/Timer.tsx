@@ -30,13 +30,12 @@ const Timer: React.FC<TimerProps> = ({ initialTime, onTimeUp, addTime }) => {
 		if (addTime > 0) {
 			setTimeLeft((prevTime) => prevTime + addTime);
 			setShowAnimation(true);
-			const timeout = setTimeout(() => setShowAnimation(false), 1000);
-			return () => clearTimeout(timeout);
+			setTimeout(() => setShowAnimation(false), 1000);
 		}
 	}, [addTime]);
 
 	return (
-		<div className='flex items-center justify-between border-r-2 border-b-2 bg-yellow-400 rounded-br-md p-1 shadow-lg border-primary w-32 relative'>
+		<div className='flex items-center justify-between border-r-2 border-b-2 bg-yellow-400 rounded-br-md p-1 shadow-lg border-primary w-32 relative dark:text-black'>
 			<p>Time:</p>
 			<p className='font-bold'>{timeLeft} s</p>
 			{showAnimation && (

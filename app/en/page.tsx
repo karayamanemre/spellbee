@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import LetterHive from "@/components/LetterHive";
 import WordInput from "@/components/WordInput";
 import Timer from "@/components/Timer";
@@ -143,7 +143,7 @@ const EnPage = () => {
 								</Button>
 							)}
 
-							<div className='flex items-center justify-between border-l-2 border-b-2 bg-yellow-400 rounded-bl-md rounded-tr-md p-1 shadow-lg border-primary w-32 relative'>
+							<div className='flex items-center justify-between border-l-2 border-b-2 bg-yellow-400 rounded-bl-md rounded-tr-md p-1 shadow-lg border-primary w-32 relative '>
 								Score: <strong>{score}</strong>
 							</div>
 						</div>

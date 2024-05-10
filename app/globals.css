@@ -181,7 +181,6 @@
 .time-add-animation {
 	position: absolute;
 	color: rgb(6, 159, 6);
-
 	animation: fadeMoveUp 1s ease-out;
 }
 

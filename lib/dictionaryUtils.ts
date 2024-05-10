@@ -1,5 +1,5 @@
 async function loadDictionary(language: string): Promise<string[]> {
-	const response = await fetch(`/api/dictionary`);
+	const response = await fetch(`https://emrekarayaman.me/dictionary.json`);
 	if (!response.ok) {
 		throw new Error("Failed to load dictionary");
 	}

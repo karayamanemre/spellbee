@@ -36,7 +36,7 @@ const LetterHive: React.FC<LetterHiveProps> = ({ letters, onShuffle }) => {
 						</Button>
 					</TooltipTrigger>
 					<TooltipContent>
-						<span>Shuffle Letters (-10)</span>
+						<span>Shuffle Letters</span>
 					</TooltipContent>
 				</Tooltip>
 			</TooltipProvider>
