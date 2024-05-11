@@ -4,7 +4,7 @@
 
 @layer base {
 	:root {
-		--background: 0 0% 100%;
+		--background: 54 54% 82%;
 		--foreground: 240 10% 3.9%;
 
 		--card: 0 0% 100%;
@@ -37,7 +37,7 @@
 
 	.dark {
 		--background: 240 10% 3.9%;
-		--foreground: 0 0% 98%;
+		--foreground: 54 54% 82%;
 
 		--card: 240 10% 3.9%;
 		--card-foreground: 0 0% 98%;
@@ -45,7 +45,7 @@
 		--popover: 240 10% 3.9%;
 		--popover-foreground: 0 0% 98%;
 
-		--primary: 0 0% 98%;
+		--primary: 54 54% 82%;
 		--primary-foreground: 240 5.9% 10%;
 
 		--secondary: 240 3.7% 15.9%;
@@ -193,4 +193,49 @@
 		opacity: 0;
 		transform: translateY(-20px);
 	}
+}
+
+@keyframes flip-in {
+	0% {
+		transform: rotateX(-90deg);
+		opacity: 0;
+	}
+	100% {
+		transform: rotateX(0deg);
+		opacity: 1;
+	}
+}
+
+.letter-flip {
+	animation: flip-in 0.6s cubic-bezier(0.455, 0.03, 0.515, 0.955) forwards;
+}
+
+@keyframes shake {
+	0%,
+	100% {
+		transform: translateX(0);
+	}
+	10%,
+	30%,
+	50%,
+	70% {
+		transform: translateX(-10px);
+	}
+	20%,
+	40%,
+	60%,
+	80% {
+		transform: translateX(10px);
+	}
+}
+
+.shake {
+	animation: shake 0.82s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
+	transform: translate3d(0, 0, 0);
+	backface-visibility: hidden;
+	perspective: 1000px;
+}
+
+.error-bg {
+	background-color: hsl(1, 100%, 62%) !important;
 }

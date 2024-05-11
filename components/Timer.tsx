@@ -10,6 +10,14 @@ const Timer: React.FC<TimerProps> = ({ initialTime, onTimeUp, addTime }) => {
 	const [timeLeft, setTimeLeft] = useState(initialTime);
 	const [showAnimation, setShowAnimation] = useState(false);
 
+	const formatTime = (seconds: any) => {
+		const minutes = Math.floor(seconds / 60);
+		const remainingSeconds = seconds % 60;
+		return `${minutes}:${
+			remainingSeconds < 10 ? `0${remainingSeconds}` : remainingSeconds
+		}`;
+	};
+
 	useEffect(() => {
 		setTimeLeft(initialTime);
 	}, [initialTime]);
@@ -35,12 +43,11 @@ const Timer: React.FC<TimerProps> = ({ initialTime, onTimeUp, addTime }) => {
 	}, [addTime]);
 
 	return (
-		<div className='flex items-center justify-between border-r-2 border-b-2 bg-yellow-400 rounded-br-md p-1 shadow-lg border-primary w-32 relative dark:text-black'>
-			<p>Time:</p>
-			<p className='font-bold'>{timeLeft} s</p>
+		<div className='flex items-center justify-center border-2 bg-cream rounded-md p-1 shadow-lg border-primary w-32 relative'>
+			<p className='font-bold text-xl sm:text-3xl'>{formatTime(timeLeft)}</p>
 			{showAnimation && (
-				<p className='time-add-animation ml-[88px] text-sm font-bold absolute top-2 -right-10'>
-					+15 s
+				<p className='time-add-animation ml-[88px] text-xl font-bold absolute top-2 -right-10'>
+					+15
 				</p>
 			)}
 		</div>

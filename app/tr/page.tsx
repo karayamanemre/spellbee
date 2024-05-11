@@ -16,6 +16,7 @@ const TrPage = () => {
 	const [gameStarted, setGameStarted] = useState(false);
 	const [additionalTime, setAdditionalTime] = useState(0);
 	const [animateTimeAdd, setAnimateTimeAdd] = useState(false);
+	const [isError, setIsError] = useState(false);
 
 	const startGame = () => {
 		setIsLoading(true);
@@ -62,7 +63,6 @@ const TrPage = () => {
 			validateWord(word, letters)
 		) {
 			setScore((prevScore) => prevScore + word.length * 10);
-
 			setAdditionalTime(15);
 			setAnimateTimeAdd(true);
 			setTimeout(() => {
@@ -71,11 +71,16 @@ const TrPage = () => {
 			}, 100);
 			refreshLetters(dictionary);
 			setError(null);
+			setIsError(false);
 		} else {
 			setError(
 				`${word} kelimesi geçersiz veya harflerle uyuşmuyor. Tekrar deneyin.`
 			);
-			setTimeout(() => setError(null), 3000);
+			setIsError(true);
+			setTimeout(() => {
+				setError(null);
+				setIsError(false);
+			}, 3000);
 		}
 	};
 
@@ -104,7 +109,7 @@ const TrPage = () => {
 	};
 
 	return (
-		<div className='flex flex-col p-4 max-w-2xl mx-auto'>
+		<div className='flex flex-col p-4 max-w-4xl mx-auto'>
 			{isLoading && (
 				<div className='flex items-center justify-center mx-auto mt-20'>
 					<div className='three-body'>
@@ -114,22 +119,23 @@ const TrPage = () => {
 					</div>
 				</div>
 			)}
-			<div className='h-10 mx-auto'>
+			<div className='h-10 mx-auto text-lg'>
 				{error && !isLoading && (
 					<p className='text-red-500 mx-auto mb-4 font-bold'>{error}</p>
 				)}
 			</div>
 			{!gameStarted && !isLoading ? (
-				<Button
-					variant='ghost'
-					onClick={startGame}
-					className='hover:bg-yellow-300 p-2 rounded-md hover:dark:text-black mt-10 shadow-lg border-2 border-black dark:border-white text-lg mx-auto'>
-					Başla <Play />
-				</Button>
+				<div className='flex items-center justify-center h-[250px]'>
+					<Button
+						onClick={startGame}
+						className='bg-turqoise font-bold text-white rounded-lg h-20 w-20 sm:h-20 sm:w-40 flex items-center justify-center shadow-[0px_7px_2px_#4f766f] hover:scale-110 letter-flip'>
+						<Play size={40} />
+					</Button>
+				</div>
 			) : (
 				!isLoading && (
-					<div className='border-2 rounded-md shadow text-center'>
-						<div className='flex items-center justify-between mx-auto'>
+					<div className='text-center flex flex-col gap-20 items-center w-full'>
+						<div className='flex items-center justify-between mx-auto w-full'>
 							<Timer
 								initialTime={60}
 								onTimeUp={handleTimeUp}
@@ -140,21 +146,20 @@ const TrPage = () => {
 								<Button
 									variant='ghost'
 									onClick={getNewLetters}
-									className='font-bold px-4 '>
+									className='font-bold px-4 text-cream'>
 									Yeni Harf Seti Al (-50)
 								</Button>
 							)}
 
-							<div className='flex items-center justify-between border-l-2 border-b-2 bg-yellow-400 rounded-bl-md rounded-tr-md p-1 shadow-lg border-primary w-32 relative '>
-								Puan: <strong>{score}</strong>
+							<div className='flex items-center justify-center border-2 bg-cream rounded-md rounded-tr-md p-1 shadow-lg border-primary w-32 relative'>
+								<p className='font-bold text-3xl'>{score}</p>
 							</div>
 						</div>
-
 						<LetterHive
 							letters={letters}
 							onShuffle={shuffleLetters}
+							isError={isError}
 						/>
-
 						<WordInput onSubmit={handleWordSubmit} />
 					</div>
 				)

@@ -1,13 +1,13 @@
 import type { Metadata } from "next";
-import { Montserrat as FontSans } from "next/font/google";
+import { Reddit_Mono as FontSans } from "next/font/google";
 import "./globals.css";
-import { ThemeProvider } from "@/components/theme-provider";
 import { cn } from "@/lib/utils";
 import { Navbar } from "@/components/Navbar";
 
 const fontSans = FontSans({
 	subsets: ["latin"],
 	variable: "--font-sans",
+	weight: ["200", "300", "400", "500", "600", "700", "800", "900"],
 });
 
 export const metadata: Metadata = {
@@ -24,17 +24,11 @@ export default function RootLayout({
 		<html lang='en'>
 			<body
 				className={cn(
-					"min-h-screen bg-background font-sans antialiased",
+					"max-h-screen bg-slate-900 font-sans antialiased ",
 					fontSans.variable
 				)}>
-				<ThemeProvider
-					attribute='class'
-					defaultTheme='system'
-					enableSystem
-					disableTransitionOnChange>
-					<Navbar />
-					{children}
-				</ThemeProvider>
+				{children}
+				<Navbar />
 			</body>
 		</html>
 	);

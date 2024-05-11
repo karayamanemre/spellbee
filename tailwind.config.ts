@@ -24,6 +24,10 @@ const config = {
 				sans: ["var(--font-sans)", ...fontFamily.sans],
 			},
 			colors: {
+				brick: "hsl(1, 82%, 65%)",
+				turqoise: "hsl(169, 27%, 61%)",
+				mustard: "hsl(33, 80%, 66%)",
+				cream: "hsl(54, 54%, 82%)",
 				border: "hsl(var(--border))",
 				input: "hsl(var(--input))",
 				ring: "hsl(var(--ring))",

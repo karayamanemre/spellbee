@@ -16,13 +16,13 @@ export function LangToggle() {
 		<DropdownMenu>
 			<DropdownMenuTrigger asChild>
 				<Button
-					variant='outline'
-					size='icon'>
+					size='icon'
+					className='rounded-md'>
 					<span className='sr-only'>Toggle language</span>
 					<p>EN</p>
 				</Button>
 			</DropdownMenuTrigger>
-			<DropdownMenuContent>
+			<DropdownMenuContent className='w-max'>
 				<DropdownMenuItem
 					asChild
 					className='cursor-pointer'>
