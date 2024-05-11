@@ -19,7 +19,7 @@ export function LangToggle() {
 					size='icon'
 					className='rounded-md'>
 					<span className='sr-only'>Toggle language</span>
-					<p>EN</p>
+					<p className='text-cream font-semibold'>EN</p>
 				</Button>
 			</DropdownMenuTrigger>
 			<DropdownMenuContent className='w-max'>

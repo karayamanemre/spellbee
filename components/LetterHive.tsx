@@ -38,7 +38,7 @@ const LetterHive: React.FC<LetterHiveProps> = ({
 						key={index}
 						className={`text-xl sm:text-4xl font-bold text-white ${
 							letter.color
-						} rounded-lg h-12 w-12 sm:h-20 sm:w-20 flex items-center justify-center shadow-[0px_8px_2px_hsl(33_80%_26%)] hover:scale-110 letter-flip ${
+						} rounded-lg h-12 w-12 sm:h-20 sm:w-20 flex items-center justify-center shadow-[0px_8px_1px_hsl(33_80%_26%)] hover:scale-110 letter-flip ${
 							isError ? "shake error-bg" : ""
 						}`}>
 						{letter.letter}
@@ -51,7 +51,7 @@ const LetterHive: React.FC<LetterHiveProps> = ({
 						<Button
 							variant='ghost'
 							onClick={onShuffle}
-							className='bg-cream p-2 mt-10 rounded-md'>
+							className='bg-cream p-2 mt-10 rounded-md shadow-[0px_3px_1px]'>
 							<ShuffleIcon />
 						</Button>
 					</TooltipTrigger>

@@ -31,7 +31,7 @@ const WordInput: React.FC<WordInputProps> = ({ onSubmit }) => {
 					placeholder={isTurkish ? "Kelime Girin" : "Enter a Word"}
 					autoComplete='off'
 					autoFocus
-					className='h-[50px] text-3xl border-cream text-cream py-2 outline-none focus:ring-0 uppercase border-b-2 shadow-none rounded-none'
+					className='h-[50px] text-3xl border-cream text-cream py-2 outline-none focus:ring-0 uppercase border-b-2 shadow-[0px_4px_0px_#000000]  rounded-none'
 				/>
 				<Button
 					variant='ghost'

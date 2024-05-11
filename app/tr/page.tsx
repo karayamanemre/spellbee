@@ -3,7 +3,10 @@ import React, { useState } from "react";
 import LetterHive from "@/components/LetterHive";
 import WordInput from "@/components/WordInput";
 import Timer from "@/components/Timer";
-import { loadDictionary, selectLettersFromWord } from "@/lib/dictionaryUtils";
+import {
+	loadDictionary,
+	selectSevenRandomLetters,
+} from "@/lib/dictionaryUtils";
 import { Button } from "@/components/ui/button";
 import { Play } from "lucide-react";
 
@@ -18,27 +21,26 @@ const TrPage = () => {
 	const [animateTimeAdd, setAnimateTimeAdd] = useState(false);
 	const [isError, setIsError] = useState(false);
 
-	const startGame = () => {
+	const startGame = async () => {
 		setIsLoading(true);
-		setTimeout(() => {
-			loadDictionary("turkish")
-				.then((words) => {
-					setDictionary(words);
-					refreshLetters(words);
-					setScore(0);
-					setGameStarted(true);
-					setError(null);
-				})
-				.catch((err) => {
-					console.error("Error loading the dictionary:", err);
-					setError("Bir şeyler ters gitti. Lütfen daha sonra tekrar deneyin.");
-				})
-				.finally(() => setIsLoading(false));
-		}, 1500);
+		try {
+			const words = await loadDictionary("turkish");
+			setDictionary(words);
+			const letters = selectSevenRandomLetters(words);
+			setLetters(letters);
+			setScore(0);
+			setGameStarted(true);
+			setError(null);
+		} catch (error) {
+			console.error("Error loading the dictionary:", error);
+			setError("Something went wrong. Please try again later.");
+		} finally {
+			setIsLoading(false);
+		}
 	};
 
 	const refreshLetters = (words: string[]) => {
-		const lettersFromWord = selectLettersFromWord(words);
+		const lettersFromWord = selectSevenRandomLetters(words);
 		setLetters(lettersFromWord);
 	};
 
@@ -73,9 +75,6 @@ const TrPage = () => {
 			setError(null);
 			setIsError(false);
 		} else {
-			setError(
-				`${word} kelimesi geçersiz veya harflerle uyuşmuyor. Tekrar deneyin.`
-			);
 			setIsError(true);
 			setTimeout(() => {
 				setError(null);
@@ -121,14 +120,16 @@ const TrPage = () => {
 			)}
 			<div className='h-10 mx-auto text-lg'>
 				{error && !isLoading && (
-					<p className='text-red-500 mx-auto mb-4 font-bold'>{error}</p>
+					<p className='text-red-500 mx-auto mt-24 font-bold bg-cream p-1 rounded-md'>
+						{error}
+					</p>
 				)}
 			</div>
 			{!gameStarted && !isLoading ? (
-				<div className='flex items-center justify-center h-[250px]'>
+				<div className='flex items-center justify-center h-[250px] mt-10'>
 					<Button
 						onClick={startGame}
-						className='bg-turqoise font-bold text-white rounded-lg h-20 w-20 sm:h-20 sm:w-40 flex items-center justify-center shadow-[0px_7px_2px_#4f766f] hover:scale-110 letter-flip'>
+						className='bg-turqoise font-bold text-white rounded-lg h-20 w-20 sm:h-24 sm:w-32 flex items-center justify-center shadow-[0px_7px_2px_#4f766f] hover:scale-110 letter-flip'>
 						<Play size={40} />
 					</Button>
 				</div>
@@ -144,9 +145,8 @@ const TrPage = () => {
 
 							{score >= 50 && (
 								<Button
-									variant='ghost'
 									onClick={getNewLetters}
-									className='font-bold px-4 text-cream'>
+									className='font-bold px-3 border border-black shadow-[0px_3px_1px] text-base sm:text-xl rounded-md bg-cream text-slate-900'>
 									Yeni Harf Seti Al (-50)
 								</Button>
 							)}

@@ -1,22 +1,13 @@
-async function loadDictionary(language: string): Promise<string[]> {
+// dictionaryUtils.ts
+type WordList = string[];
+
+async function loadDictionary(language: string): Promise<WordList> {
 	const response = await fetch(`https://emrekarayaman.me/dictionary.json`);
 	if (!response.ok) {
 		throw new Error("Failed to load dictionary");
 	}
 	const data = await response.json();
-	switch (language) {
-		case "english":
-			return data.englishWords;
-		case "turkish":
-			return data.turkishWords;
-		default:
-			throw new Error("Invalid language specified");
-	}
-}
-
-function selectLettersFromWord(words: string[]): string[] {
-	const baseWord = words[Math.floor(Math.random() * words.length)];
-	return shuffleArray(baseWord.toUpperCase().split(""));
+	return data[language + "Words"] || [];
 }
 
 function shuffleArray(array: string[]): string[] {
@@ -27,4 +18,42 @@ function shuffleArray(array: string[]): string[] {
 	return array;
 }
 
-export { loadDictionary, selectLettersFromWord, shuffleArray };
+function selectSevenRandomLetters(words: WordList): string[] {
+	const allLetters = words
+		.join("")
+		.toUpperCase()
+		.replace(/[^A-Z]/gi, "")
+		.split("");
+	let selectedLetters: string[] = [];
+	let attempts = 0;
+
+	do {
+		shuffleArray(allLetters);
+		selectedLetters = allLetters.slice(0, 7);
+		attempts++;
+		// Prevent infinite loops
+		if (attempts > 100) break;
+	} while (!canFormWords(selectedLetters, words));
+
+	return selectedLetters;
+}
+
+function canFormWords(letters: string[], dictionary: WordList): boolean {
+	const letterCounts = letters.reduce((counts, letter) => {
+		counts[letter] = (counts[letter] || 0) + 1;
+		return counts;
+	}, {} as Record<string, number>);
+
+	return dictionary.some((word) => {
+		const wordCounts = Array.from(word.toUpperCase()).reduce((counts, char) => {
+			counts[char] = (counts[char] || 0) + 1;
+			return counts;
+		}, {} as Record<string, number>);
+
+		return Object.keys(wordCounts).every(
+			(char) => wordCounts[char] <= (letterCounts[char] || 0)
+		);
+	});
+}
+
+export { loadDictionary, selectSevenRandomLetters, shuffleArray };
