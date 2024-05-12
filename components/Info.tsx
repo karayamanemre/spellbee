@@ -29,16 +29,16 @@ const Info = () => {
 					</DialogTitle>
 					<DialogDescription>
 						<p className='text-base lg:text-lg'>
-							Welcome to the Spelling Bee Game! You get seven letters to form
-							words. Each word must be at least three letters long. Points are
-							awarded based on word length. Our dictionary is limited, so thank
-							you for your understanding!
+							Welcome to the Spell It! You get seven letters to form words. Each
+							word must be at least three letters long. Points are awarded based
+							on word length. Our dictionary is limited, so thank you for your
+							understanding!
 							<br />
 							<br />
-							Spelling Bee Oyununa hoş geldiniz! Kelime oluşturmak için yedi
-							harf alırsınız. Her kelime en az üç harfli olmalıdır. Puanlar
-							kelimenin uzunluğuna göre verilir. Sözlüğümüz geniş değildir,
-							anlayışınız için teşekkürler!
+							Spell It Oyununa hoş geldiniz! Kelime oluşturmak için yedi harf
+							alırsınız. Her kelime en az üç harfli olmalıdır. Puanlar kelimenin
+							uzunluğuna göre verilir. Sözlüğümüz geniş değildir, anlayışınız
+							için teşekkürler!
 						</p>
 					</DialogDescription>
 				</DialogHeader>
