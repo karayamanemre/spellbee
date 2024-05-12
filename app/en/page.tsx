@@ -120,7 +120,7 @@ const EnPage = () => {
 			)}
 
 			{error && !isLoading && (
-				<p className='text-red-500 mx-auto mt-24 font-bold bg-cream p-2 border-black border-2 rounded-md shadow-[0px_3px_1px_#000000]'>
+				<p className='text-red-500 mx-auto text-xl sm:text-2xl mt-24 font-bold bg-cream p-2 border-black border-2 rounded-md shadow-[0px_3px_1px_#000000]'>
 					{error}
 				</p>
 			)}
@@ -152,7 +152,7 @@ const EnPage = () => {
 							)}
 
 							<div className='flex items-center justify-center border-4 bg-cream rounded-md rounded-tr-md p-1 shadow-[0px_3px_1px] border-primary w-32 relative'>
-								<p className='font-bold text-3xl'>{score}</p>
+								<p className='font-bold text-xl sm:text-3xl'>{score}</p>
 							</div>
 						</div>
 						<LetterHive

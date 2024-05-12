@@ -23,7 +23,11 @@ const LetterHive: React.FC<LetterHiveProps> = ({
 	const languageCode = useGetLanguage();
 	const isTurkish = languageCode === "tr";
 
-	const colors = ["bg-mustard", "bg-turqoise", "bg-brick"];
+	const colors = [
+		"bg-mustard shadow-[0px_8px_1px_hsl(33_44%_43%)]",
+		"bg-turqoise shadow-[0px_8px_1px_hsl(169_20%_39%)]",
+		"bg-brick shadow-[0px_8px_1px_hsl(358_44%_43%)]",
+	];
 
 	const randomizedLetters = letters.map((letter) => {
 		const randomColor = colors[Math.floor(Math.random() * colors.length)];
@@ -38,7 +42,7 @@ const LetterHive: React.FC<LetterHiveProps> = ({
 						key={index}
 						className={`text-xl sm:text-4xl font-bold text-white ${
 							letter.color
-						} rounded-lg h-12 w-12 sm:h-20 sm:w-20 flex items-center justify-center shadow-[0px_8px_1px_hsl(33_80%_26%)] hover:scale-110 letter-flip ${
+						} rounded-lg h-12 w-12 sm:h-20 sm:w-20 flex items-center justify-center hover:scale-110 letter-flip ${
 							isError ? "shake error-bg" : ""
 						}`}>
 						{letter.letter}

@@ -83,7 +83,7 @@ body {
 .three-body {
 	--uib-size: 55px;
 	--uib-speed: 0.8s;
-	--uib-color: #ffaa2b;
+	--uib-color: hsl(33, 80%, 66%);
 	position: relative;
 	display: inline-block;
 	height: var(--uib-size);
@@ -242,5 +242,6 @@ body {
 }
 
 .error-bg {
-	background-color: hsl(1, 100%, 62%) !important;
+	background-color: hsl(338, 12%, 32%) !important;
+	box-shadow: 0px 8px 1px hsl(4, 16%, 21%) !important;
 }
