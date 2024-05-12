@@ -32,6 +32,20 @@ const EnPage = () => {
 	const [guessedWords, setGuessedWords] = useState<Set<string>>(new Set());
 	const [hints, setHints] = useState<string[]>([]);
 
+	const handleResetGame = () => {
+		setGameStarted(false);
+		setLetters([]);
+		setDictionary([]);
+		setScore(20);
+		setError(null);
+		setIsError(false);
+		setWord("");
+		setGuessedWords(new Set());
+		setHints([]);
+		setScoreAnimation({ show: false, points: 0 });
+		setAdditionalTime(0);
+	};
+
 	const allWords = useMemo(() => {
 		return findFormableWords(letters, dictionary);
 	}, [letters, dictionary]);
@@ -158,6 +172,7 @@ const EnPage = () => {
 								setHints={setHints}
 								hints={hints}
 								setScore={setScore}
+								onQuitGame={handleResetGame}
 							/>
 
 							<div className='flex items-center justify-center border-4 bg-cream rounded-md rounded-tr-md p-1 shadow-[0px_3px_1px] border-primary w-32 relative'>

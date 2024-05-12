@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Button } from "./ui/button";
-import { Lightbulb, RefreshCcw, ShuffleIcon } from "lucide-react";
+import { Lightbulb, PowerOff, RefreshCcw, ShuffleIcon } from "lucide-react";
 import {
 	Tooltip,
 	TooltipContent,
@@ -12,8 +12,21 @@ import {
 	PopoverContent,
 	PopoverTrigger,
 } from "@/components/ui/popover";
+import {
+	AlertDialog,
+	AlertDialogAction,
+	AlertDialogCancel,
+	AlertDialogContent,
+	AlertDialogDescription,
+	AlertDialogFooter,
+	AlertDialogHeader,
+	AlertDialogTitle,
+	AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
+
 import { findFormableWords } from "@/lib/dictionaryUtils";
 import useGetLanguage from "@/lib/useGetLanguage";
+import { ExitIcon } from "@radix-ui/react-icons";
 
 interface GameControlsProps {
 	letters: string[];
@@ -25,6 +38,7 @@ interface GameControlsProps {
 	setHints: (hints: string[]) => void;
 	hints: string[];
 	setScore: (score: number) => void;
+	onQuitGame: () => void;
 }
 
 const GameControls: React.FC<GameControlsProps> = ({
@@ -37,6 +51,7 @@ const GameControls: React.FC<GameControlsProps> = ({
 	setHints,
 	hints,
 	setScore,
+	onQuitGame,
 }) => {
 	const languageCode = useGetLanguage();
 	const isTurkish = languageCode === "tr";
@@ -152,6 +167,31 @@ const GameControls: React.FC<GameControlsProps> = ({
 					</TooltipContent>
 				</Tooltip>
 			</TooltipProvider>
+
+			<AlertDialog>
+				<AlertDialogTrigger asChild>
+					<Button
+						variant='ghost'
+						className='bg-cream p-2 rounded-md shadow-[0px_3px_1px] hover:bg-mustard text-black'>
+						<ExitIcon />
+					</Button>
+				</AlertDialogTrigger>
+				<AlertDialogContent>
+					<AlertDialogHeader>
+						<AlertDialogTitle>
+							{isTurkish ? "Oyundan Çık" : "Quit Game"}
+						</AlertDialogTitle>
+					</AlertDialogHeader>
+					<AlertDialogFooter>
+						<AlertDialogCancel>
+							{isTurkish ? "İptal" : "Cancel"}
+						</AlertDialogCancel>
+						<AlertDialogAction onClick={onQuitGame}>
+							{isTurkish ? "Çık" : "Quit"}
+						</AlertDialogAction>
+					</AlertDialogFooter>
+				</AlertDialogContent>
+			</AlertDialog>
 		</div>
 	);
 };
