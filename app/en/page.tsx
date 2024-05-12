@@ -108,7 +108,7 @@ const EnPage = () => {
 	};
 
 	return (
-		<div className='flex flex-col p-4 max-w-4xl mx-auto'>
+		<div className='flex flex-col p-4 max-w-4xl mx-auto mt-8'>
 			{isLoading && (
 				<div className='flex items-center justify-center mx-auto mt-20'>
 					<div className='three-body'>
