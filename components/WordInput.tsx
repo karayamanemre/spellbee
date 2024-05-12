@@ -19,6 +19,11 @@ const WordInput: React.FC<WordInputProps> = ({ onSubmit }) => {
 		setWord("");
 	};
 
+	const placeholderText = isTurkish ? "KELİME GİRİN" : "Enter a Word";
+	const uppercasePlaceholder = isTurkish
+		? placeholderText.toUpperCase()
+		: placeholderText.toUpperCase();
+
 	return (
 		<form
 			onSubmit={handleSubmit}
@@ -28,10 +33,12 @@ const WordInput: React.FC<WordInputProps> = ({ onSubmit }) => {
 					type='text'
 					value={word}
 					onChange={(e) => setWord(e.target.value)}
-					placeholder={isTurkish ? "Kelime Girin" : "Enter a Word"}
+					placeholder={uppercasePlaceholder}
 					autoComplete='off'
 					autoFocus
-					className='h-[50px] text-3xl border-cream text-cream py-2 outline-none focus:ring-0 uppercase border-b-2 shadow-[0px_4px_0px_#000000]  rounded-none'
+					className={`h-[50px] text-3xl border-cream text-cream py-2 outline-none focus:ring-0 border-b-2 shadow-[0px_4px_0px_#000000] rounded-none ${
+						isTurkish ? "placeholder:uppercase" : ""
+					}`}
 				/>
 				<Button
 					variant='ghost'

@@ -40,7 +40,7 @@ const LetterHive: React.FC<LetterHiveProps> = ({
 				{randomizedLetters.map((letter, index) => (
 					<span
 						key={index}
-						className={`text-xl sm:text-4xl font-bold text-white ${
+						className={`text-xl [text-shadow:_1px_1px_0px_#000000] drop-shadow-[1px_1px_0px_rgba(0,0,0,0.25)] sm:text-4xl font-bold text-white ${
 							letter.color
 						} rounded-lg h-12 w-12 sm:h-20 sm:w-20 flex items-center justify-center hover:scale-110 letter-flip ${
 							isError ? "shake error-bg" : ""
