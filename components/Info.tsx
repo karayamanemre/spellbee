@@ -13,7 +13,7 @@ import { Button } from "./ui/button";
 const Info = () => {
 	return (
 		<Dialog>
-			<DialogTrigger>
+			<DialogTrigger asChild>
 				<Button
 					size='icon'
 					className='rounded-md'>

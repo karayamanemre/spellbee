@@ -20,6 +20,11 @@ const EnPage = () => {
 	const [additionalTime, setAdditionalTime] = useState(0);
 	const [animateTimeAdd, setAnimateTimeAdd] = useState(false);
 	const [isError, setIsError] = useState(false);
+	const [word, setWord] = useState("");
+
+	const addLetterToWord = (letter: string) => {
+		setWord((prevWord) => prevWord + letter);
+	};
 
 	const startGame = async () => {
 		setIsLoading(true);
@@ -159,8 +164,13 @@ const EnPage = () => {
 							letters={letters}
 							onShuffle={shuffleLetters}
 							isError={isError}
+							onLetterClick={addLetterToWord}
 						/>
-						<WordInput onSubmit={handleWordSubmit} />
+						<WordInput
+							onSubmit={handleWordSubmit}
+							word={word}
+							setWord={setWord}
+						/>
 					</div>
 				)
 			)}

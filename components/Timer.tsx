@@ -43,7 +43,7 @@ const Timer: React.FC<TimerProps> = ({ initialTime, onTimeUp, addTime }) => {
 	}, [addTime]);
 
 	return (
-		<div className='flex items-center justify-center border-4 bg-cream rounded-md p-1 shadow-[0px_3px_1px] border-primary w-32 relative'>
+		<div className='flex items-center justify-center border-4 bg-cream rounded-md p-1 shadow-[0px_3px_1px] border-primary w-32 relative drop-shadow-2xl'>
 			<p className='font-bold text-xl sm:text-3xl'>{formatTime(timeLeft)}</p>
 			{showAnimation && (
 				<p className='time-add-animation ml-[88px] text-xl font-bold absolute top-2 -right-10'>
