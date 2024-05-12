@@ -145,10 +145,11 @@ const EnPage = () => {
 			)}
 
 			{!gameStarted && !isLoading ? (
-				<div className='flex drop-shadow-2xl items-center justify-center h-[250px] mt-10'>
+				<div className='flex flex-col gap-10 drop-shadow-2xl items-center justify-center h-[350px]'>
+					<h1 className='font-semibold text-4xl text-cream'>Spell It!</h1>
 					<Button
 						onClick={handleStartGame}
-						className='bg-turqoise font-bold text-white rounded-lg h-20 w-20 sm:h-24 sm:w-32 flex items-center drop-shadow-2xl justify-center shadow-[0px_7px_2px_#4f766f] hover:scale-110 letter-flip'>
+						className='bg-turqoise font-bold text-white rounded-lg h-20 w-20 sm:h-24 sm:w-32 flex items-center drop-shadow-2xl justify-center shadow-[0px_7px_2px_#4f766f] hover:scale-110 letter-flip hover:brightness-110'>
 						<Play size={40} />
 					</Button>
 				</div>
