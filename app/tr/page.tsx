@@ -61,7 +61,7 @@ const TrPage = () => {
 	};
 
 	const handleTimeUp = () => {
-		setError(`Süre doldu. Puanınız: ${score}`);
+		setError(`Süre doldu. Skorunuz: ${score}`);
 		setGameStarted(false);
 	};
 

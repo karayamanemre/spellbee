@@ -92,9 +92,12 @@ const EnPage = () => {
 	};
 
 	// eslint-disable-next-line react-hooks/exhaustive-deps
-	const handleShuffleLetters = () => {
-		setLetters(shuffleLetters(letters));
-	};
+	const handleShuffleLetters = useCallback(
+		throttle(() => {
+			setLetters(shuffleLetters(letters));
+		}, 300),
+		[letters]
+	);
 
 	useEffect(() => {
 		if (allWords.length && allWords.every((word) => guessedWords.has(word))) {
