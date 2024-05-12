@@ -3,12 +3,14 @@ import React, { useState } from "react";
 import LetterHive from "@/components/LetterHive";
 import WordInput from "@/components/WordInput";
 import Timer from "@/components/Timer";
-import {
-	loadDictionary,
-	selectSevenRandomLetters,
-} from "@/lib/dictionaryUtils";
 import { Button } from "@/components/ui/button";
 import { Play } from "lucide-react";
+import {
+	startGame,
+	refreshLetters,
+	validateWord,
+	shuffleLetters,
+} from "@/lib/gameService";
 
 const TrPage = () => {
 	const [letters, setLetters] = useState<string[]>([]);
@@ -18,35 +20,27 @@ const TrPage = () => {
 	const [score, setScore] = useState(0);
 	const [gameStarted, setGameStarted] = useState(false);
 	const [additionalTime, setAdditionalTime] = useState(0);
-	const [animateTimeAdd, setAnimateTimeAdd] = useState(false);
 	const [isError, setIsError] = useState(false);
 	const [word, setWord] = useState("");
 
-	const addLetterToWord = (letter: string) => {
-		setWord((prevWord) => prevWord + letter);
-	};
-
-	const startGame = async () => {
+	const handleStartGame = async () => {
 		setIsLoading(true);
 		try {
-			const words = await loadDictionary("turkish");
+			const { words, letters } = await startGame("turkish");
 			setDictionary(words);
-			const letters = selectSevenRandomLetters(words);
 			setLetters(letters);
 			setScore(0);
 			setGameStarted(true);
 			setError(null);
 		} catch (error) {
-			console.error("Error loading the dictionary:", error);
-			setError("Something went wrong. Please try again later.");
+			if (error instanceof Error) {
+				setError(error.message);
+			} else {
+				setError("An unexpected error occurred");
+			}
 		} finally {
 			setIsLoading(false);
 		}
-	};
-
-	const refreshLetters = (words: string[]) => {
-		const lettersFromWord = selectSevenRandomLetters(words);
-		setLetters(lettersFromWord);
 	};
 
 	const handleTimeUp = () => {
@@ -54,62 +48,26 @@ const TrPage = () => {
 		setGameStarted(false);
 	};
 
-	const getNewLetters = () => {
-		if (score >= 50) {
-			setScore((prevScore) => prevScore - 50);
-			refreshLetters(dictionary);
-		} else {
-			setError("Yeni harfler almak için yeterli puanınız yok.");
-			setTimeout(() => setError(null), 3000);
-		}
-	};
-
-	const handleWordSubmit = (word: string) => {
+	const handleWordSubmit = (submittedWord: string) => {
 		if (
-			dictionary.includes(word.toLowerCase()) &&
-			validateWord(word, letters)
+			dictionary.includes(submittedWord.toLowerCase()) &&
+			validateWord(submittedWord, letters)
 		) {
-			setScore((prevScore) => prevScore + word.length * 10);
+			const newScore = score + submittedWord.length * 10;
+			setScore(newScore);
 			setAdditionalTime(15);
-			setAnimateTimeAdd(true);
-			setTimeout(() => {
-				setAdditionalTime(0);
-				setAnimateTimeAdd(false);
-			}, 100);
-			refreshLetters(dictionary);
+			setTimeout(() => setAdditionalTime(0), 100);
+			setLetters(refreshLetters(dictionary));
 			setError(null);
 			setIsError(false);
 		} else {
 			setIsError(true);
-			setTimeout(() => {
-				setError(null);
-				setIsError(false);
-			}, 3000);
+			setTimeout(() => setIsError(false), 3000);
 		}
 	};
 
-	const validateWord = (word: string, availableLetters: string[]): boolean => {
-		let tempLetters = availableLetters.slice();
-		for (let char of word.toUpperCase()) {
-			const index = tempLetters.indexOf(char);
-			if (index === -1) {
-				return false;
-			}
-			tempLetters.splice(index, 1);
-		}
-		setError(null);
-		return true;
-	};
-
-	const shuffleLetters = () => {
-		setLetters((prevLetters) => {
-			const shuffled = [...prevLetters];
-			for (let i = shuffled.length - 1; i > 0; i--) {
-				const j = Math.floor(Math.random() * (i + 1));
-				[shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
-			}
-			return shuffled;
-		});
+	const handleShuffleLetters = () => {
+		setLetters(shuffleLetters(letters));
 	};
 
 	return (
@@ -133,7 +91,7 @@ const TrPage = () => {
 			{!gameStarted && !isLoading ? (
 				<div className='flex drop-shadow-2xl items-center justify-center h-[250px] mt-10'>
 					<Button
-						onClick={startGame}
+						onClick={handleStartGame}
 						className='bg-turqoise font-bold text-white rounded-lg h-20 w-20 sm:h-24 sm:w-32 flex items-center drop-shadow-2xl justify-center shadow-[0px_7px_2px_#4f766f] hover:scale-110 letter-flip'>
 						<Play size={40} />
 					</Button>
@@ -150,7 +108,10 @@ const TrPage = () => {
 
 							{score >= 50 && (
 								<Button
-									onClick={getNewLetters}
+									onClick={() => {
+										setScore((prevScore) => prevScore - 50);
+										setLetters(refreshLetters(dictionary));
+									}}
 									className='font-bold px-3 border border-black shadow-[0px_3px_1px] text-base sm:text-xl rounded-md bg-cream text-slate-900'>
 									Yeni Harf Seti Al (-50)
 								</Button>
@@ -162,9 +123,9 @@ const TrPage = () => {
 						</div>
 						<LetterHive
 							letters={letters}
-							onShuffle={shuffleLetters}
+							onShuffle={handleShuffleLetters}
 							isError={isError}
-							onLetterClick={addLetterToWord}
+							onLetterClick={(letter: string) => setWord(word + letter)}
 						/>
 						<WordInput
 							onSubmit={handleWordSubmit}

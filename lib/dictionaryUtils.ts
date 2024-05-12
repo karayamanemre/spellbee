@@ -30,28 +30,42 @@ function selectSevenRandomLetters(words: WordList): string[] {
 		shuffleArray(allLetters);
 		selectedLetters = allLetters.slice(0, 7);
 		attempts++;
-		if (attempts > 100) break;
-	} while (!canFormWords(selectedLetters, words));
+		if (attempts > 100) break; // Limit attempts to avoid potential infinite loops
+	} while (!canFormAtLeastTwoWords(selectedLetters, words, 2));
 
 	return selectedLetters;
 }
 
-function canFormWords(letters: string[], dictionary: WordList): boolean {
+function canFormAtLeastTwoWords(
+	letters: string[],
+	dictionary: WordList,
+	minimumWords: number
+): boolean {
 	const letterCounts = letters.reduce((counts, letter) => {
 		counts[letter] = (counts[letter] || 0) + 1;
 		return counts;
 	}, {} as Record<string, number>);
 
-	return dictionary.some((word) => {
+	let matchingWordsCount = 0;
+
+	for (const word of dictionary) {
 		const wordCounts = Array.from(word.toUpperCase()).reduce((counts, char) => {
 			counts[char] = (counts[char] || 0) + 1;
 			return counts;
 		}, {} as Record<string, number>);
 
-		return Object.keys(wordCounts).every(
-			(char) => wordCounts[char] <= (letterCounts[char] || 0)
-		);
-	});
+		if (
+			Object.keys(wordCounts).every(
+				(char) => wordCounts[char] <= (letterCounts[char] || 0)
+			)
+		) {
+			matchingWordsCount++;
+			if (matchingWordsCount >= minimumWords) {
+				return true; // Return true as soon as we find enough words
+			}
+		}
+	}
+	return false; // Return false if we couldn't find enough words
 }
 
 export { loadDictionary, selectSevenRandomLetters, shuffleArray };
