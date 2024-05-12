@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Analytics } from "@vercel/analytics/react";
 import { Reddit_Mono as FontSans } from "next/font/google";
 import "./globals.css";
 import { cn } from "@/lib/utils";
@@ -28,6 +29,7 @@ export default function RootLayout({
 					fontSans.variable
 				)}>
 				{children}
+				<Analytics />
 				<Navbar />
 			</body>
 		</html>
