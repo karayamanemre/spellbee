@@ -1,7 +1,6 @@
 "use client";
 
 import * as React from "react";
-
 import { Button } from "@/components/ui/button";
 import {
 	DropdownMenu,
@@ -10,8 +9,11 @@ import {
 	DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import Link from "next/link";
+import useGetLanguage from "@/lib/useGetLanguage";
 
 export function LangToggle() {
+	const languageCode = useGetLanguage();
+	const isTurkish = languageCode === "tr";
 	return (
 		<DropdownMenu>
 			<DropdownMenuTrigger asChild>
@@ -19,7 +21,7 @@ export function LangToggle() {
 					size='icon'
 					className='rounded-md'>
 					<span className='sr-only'>Toggle language</span>
-					<p className='text-cream font-semibold'>EN</p>
+					{isTurkish ? "TR" : "EN"}
 				</Button>
 			</DropdownMenuTrigger>
 			<DropdownMenuContent className='w-max'>

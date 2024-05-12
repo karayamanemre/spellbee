@@ -1,4 +1,3 @@
-// dictionaryUtils.ts
 type WordList = string[];
 
 async function loadDictionary(language: string): Promise<WordList> {
@@ -31,7 +30,6 @@ function selectSevenRandomLetters(words: WordList): string[] {
 		shuffleArray(allLetters);
 		selectedLetters = allLetters.slice(0, 7);
 		attempts++;
-		// Prevent infinite loops
 		if (attempts > 100) break;
 	} while (!canFormWords(selectedLetters, words));
 

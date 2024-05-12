@@ -45,7 +45,7 @@ const EnPage = () => {
 	};
 
 	const handleTimeUp = () => {
-		setError(`Time is up. Your score: ${score}`);
+		setError(`Time's up! Your score: ${score}`);
 		setGameStarted(false);
 	};
 
@@ -54,7 +54,7 @@ const EnPage = () => {
 			setScore((prevScore) => prevScore - 50);
 			refreshLetters(dictionary);
 		} else {
-			setError("You don't have enough points to get new letters.");
+			setError("Don't have enough points to get new letters.");
 			setTimeout(() => setError(null), 3000);
 		}
 	};
@@ -75,7 +75,6 @@ const EnPage = () => {
 			setError(null);
 			setIsError(false);
 		} else {
-			setError("Invalid word.");
 			setIsError(true);
 			setTimeout(() => {
 				setError(null);
@@ -119,13 +118,13 @@ const EnPage = () => {
 					</div>
 				</div>
 			)}
-			<div className='h-10 mx-auto text-lg'>
-				{error && !isLoading && (
-					<p className='text-red-500 mx-auto mt-24 font-bold bg-cream p-1 rounded-md'>
-						{error}
-					</p>
-				)}
-			</div>
+
+			{error && !isLoading && (
+				<p className='text-red-500 mx-auto mt-24 font-bold bg-cream p-2 border-black border-2 rounded-md shadow-[0px_3px_1px_#000000]'>
+					{error}
+				</p>
+			)}
+
 			{!gameStarted && !isLoading ? (
 				<div className='flex items-center justify-center h-[250px] mt-10'>
 					<Button
@@ -153,16 +152,14 @@ const EnPage = () => {
 							)}
 
 							<div className='flex items-center justify-center border-4 bg-cream rounded-md rounded-tr-md p-1 shadow-[0px_3px_1px] border-primary w-32 relative'>
-								<p className='font-bold text-lg sm:text-3xl'>{score}</p>
+								<p className='font-bold text-3xl'>{score}</p>
 							</div>
 						</div>
-
 						<LetterHive
 							letters={letters}
 							onShuffle={shuffleLetters}
 							isError={isError}
 						/>
-
 						<WordInput onSubmit={handleWordSubmit} />
 					</div>
 				)

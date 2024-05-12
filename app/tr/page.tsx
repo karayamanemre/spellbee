@@ -45,7 +45,7 @@ const TrPage = () => {
 	};
 
 	const handleTimeUp = () => {
-		setError(`Zaman doldu. Skorunuz: ${score}`);
+		setError(`Süre bitti. Skorunuz: ${score}`);
 		setGameStarted(false);
 	};
 
@@ -118,13 +118,13 @@ const TrPage = () => {
 					</div>
 				</div>
 			)}
-			<div className='h-10 mx-auto text-lg'>
-				{error && !isLoading && (
-					<p className='text-red-500 mx-auto mt-24 font-bold bg-cream p-1 rounded-md'>
-						{error}
-					</p>
-				)}
-			</div>
+
+			{error && !isLoading && (
+				<p className='text-red-500 mx-auto mt-24 font-bold bg-cream p-2 border-black border-2 rounded-md shadow-[0px_3px_1px_#000000]'>
+					{error}
+				</p>
+			)}
+
 			{!gameStarted && !isLoading ? (
 				<div className='flex items-center justify-center h-[250px] mt-10'>
 					<Button
@@ -151,7 +151,7 @@ const TrPage = () => {
 								</Button>
 							)}
 
-							<div className='flex items-center justify-center border-2 bg-cream rounded-md rounded-tr-md p-1 shadow-lg border-primary w-32 relative'>
+							<div className='flex items-center justify-center border-4 bg-cream rounded-md rounded-tr-md p-1 shadow-[0px_3px_1px] border-primary w-32 relative'>
 								<p className='font-bold text-3xl'>{score}</p>
 							</div>
 						</div>
