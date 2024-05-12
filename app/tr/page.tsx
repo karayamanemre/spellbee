@@ -15,13 +15,17 @@ import {
 import GameControls from "@/components/GameControls";
 import { findFormableWords } from "@/lib/dictionaryUtils";
 
-const TrPage = () => {
+const EnPage = () => {
 	const [letters, setLetters] = useState<string[]>([]);
 	const [dictionary, setDictionary] = useState<string[]>([]);
 	const [isLoading, setIsLoading] = useState(false);
 	const [error, setError] = useState<string | null>(null);
 	const [score, setScore] = useState(20);
 	const [gameStarted, setGameStarted] = useState(false);
+	const [scoreAnimation, setScoreAnimation] = useState({
+		show: false,
+		points: 0,
+	});
 	const [additionalTime, setAdditionalTime] = useState(0);
 	const [isError, setIsError] = useState(false);
 	const [word, setWord] = useState("");
@@ -61,7 +65,7 @@ const TrPage = () => {
 	};
 
 	const handleTimeUp = () => {
-		setError(`Süre doldu. Skorunuz: ${score}`);
+		setError(`Süre doldu! Skorunuz: ${score}`);
 		setGameStarted(false);
 	};
 
@@ -70,8 +74,11 @@ const TrPage = () => {
 			dictionary.includes(submittedWord.toLowerCase()) &&
 			validateWord(submittedWord, letters)
 		) {
-			const newScore = score + submittedWord.length * 5;
+			const pointsEarned = submittedWord.length * 5;
+			const newScore = score + pointsEarned;
 			setScore(newScore);
+			setScoreAnimation({ show: true, points: pointsEarned });
+			setTimeout(() => setScoreAnimation({ show: false, points: 0 }), 1000);
 			setAdditionalTime(15);
 			setTimeout(() => setAdditionalTime(0), 100);
 			guessedWords.add(submittedWord.toLowerCase());
@@ -155,6 +162,11 @@ const TrPage = () => {
 
 							<div className='flex items-center justify-center border-4 bg-cream rounded-md rounded-tr-md p-1 shadow-[0px_3px_1px] border-primary w-32 relative'>
 								<p className='font-bold text-xl sm:text-3xl'>{score}</p>
+								{scoreAnimation.show && (
+									<p className='score-add-animation ml-[88px] text-xl font-bold absolute top-2 -right-10'>
+										+{scoreAnimation.points}
+									</p>
+								)}
 							</div>
 						</div>
 						<LetterHive
@@ -174,4 +186,4 @@ const TrPage = () => {
 	);
 };
 
-export default TrPage;
+export default EnPage;
