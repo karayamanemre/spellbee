@@ -20,8 +20,8 @@ function shuffleArray(array: string[]): string[] {
 function selectSevenRandomLetters(words: WordList): string[] {
 	const allLetters = words
 		.join("")
+		.replace(/[^a-zşğüöçı]/gi, "")
 		.toUpperCase()
-		.replace(/[^A-Z]/gi, "")
 		.split("");
 	let selectedLetters: string[] = [];
 	let attempts = 0;

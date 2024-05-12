@@ -45,12 +45,12 @@ const WordInput: React.FC<WordInputProps> = ({ onSubmit, word, setWord }) => {
 					placeholder={placeholderText}
 					autoComplete='off'
 					autoFocus
-					className={`h-[50px] text-3xl border-cream text-cream py-2 outline-none focus:ring-0 border-b-2 shadow-[0px_4px_0px_#000000] rounded-none lowercase`}
+					className={`h-[40px] lg:h-[50px] text-2xl lg:text-3xl border-cream text-cream py-2 outline-none focus:ring-0 border-b-2 shadow-[0px_4px_0px_#000000] rounded-none uppercase`}
 				/>
 				<Button
 					variant='ghost'
 					type='submit'
-					className='absolute top-2 right-[1px] bg-cream p-2 rounded-md shadow-[0px_3px_1px] hover:bg-mustard text-black'>
+					className='absolute -top-1 lg:top-2 right-[1px] bg-cream p-2 rounded-md shadow-[0px_3px_1px] hover:bg-mustard text-black'>
 					<CornerDownLeft />
 				</Button>
 			</div>

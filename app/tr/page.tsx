@@ -1,5 +1,6 @@
 "use client";
-import React, { useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
+import { throttle } from "lodash";
 import LetterHive from "@/components/LetterHive";
 import WordInput from "@/components/WordInput";
 import Timer from "@/components/Timer";
@@ -11,17 +12,32 @@ import {
 	validateWord,
 	shuffleLetters,
 } from "@/lib/gameService";
+import GameControls from "@/components/GameControls";
+import { findFormableWords } from "@/lib/dictionaryUtils";
 
 const TrPage = () => {
 	const [letters, setLetters] = useState<string[]>([]);
 	const [dictionary, setDictionary] = useState<string[]>([]);
 	const [isLoading, setIsLoading] = useState(false);
 	const [error, setError] = useState<string | null>(null);
-	const [score, setScore] = useState(0);
+	const [score, setScore] = useState(20);
 	const [gameStarted, setGameStarted] = useState(false);
 	const [additionalTime, setAdditionalTime] = useState(0);
 	const [isError, setIsError] = useState(false);
 	const [word, setWord] = useState("");
+	const [guessedWords, setGuessedWords] = useState<Set<string>>(new Set());
+	const [hints, setHints] = useState<string[]>([]);
+
+	const allWords = useMemo(() => {
+		return findFormableWords(letters, dictionary);
+	}, [letters, dictionary]);
+
+	const handleNewLetters = useCallback(() => {
+		const newLetters = refreshLetters(dictionary);
+		setLetters(newLetters);
+		setGuessedWords(new Set());
+		setHints([]);
+	}, [dictionary]);
 
 	const handleStartGame = async () => {
 		setIsLoading(true);
@@ -29,8 +45,9 @@ const TrPage = () => {
 			const { words, letters } = await startGame("turkish");
 			setDictionary(words);
 			setLetters(letters);
-			setScore(0);
+			setScore(20);
 			setGameStarted(true);
+			setGuessedWords(new Set());
 			setError(null);
 		} catch (error) {
 			if (error instanceof Error) {
@@ -44,7 +61,7 @@ const TrPage = () => {
 	};
 
 	const handleTimeUp = () => {
-		setError(`Süre bitti. Skorunuz: ${score}`);
+		setError(`Süre doldu. Puanınız: ${score}`);
 		setGameStarted(false);
 	};
 
@@ -53,22 +70,40 @@ const TrPage = () => {
 			dictionary.includes(submittedWord.toLowerCase()) &&
 			validateWord(submittedWord, letters)
 		) {
-			const newScore = score + submittedWord.length * 10;
+			const newScore = score + submittedWord.length * 5;
 			setScore(newScore);
 			setAdditionalTime(15);
 			setTimeout(() => setAdditionalTime(0), 100);
-			setLetters(refreshLetters(dictionary));
+			guessedWords.add(submittedWord.toLowerCase());
+			setGuessedWords(new Set(guessedWords));
+			if (!hints.includes(submittedWord.toLowerCase())) {
+				setHints([...hints, submittedWord.toLowerCase()]);
+			}
 			setError(null);
 			setIsError(false);
+			const allWords = findFormableWords(letters, dictionary);
+			if (allWords.every((word) => guessedWords.has(word))) {
+				handleNewLetters();
+			}
 		} else {
 			setIsError(true);
 			setTimeout(() => setIsError(false), 3000);
 		}
 	};
 
-	const handleShuffleLetters = () => {
-		setLetters(shuffleLetters(letters));
-	};
+	// eslint-disable-next-line react-hooks/exhaustive-deps
+	const handleShuffleLetters = useCallback(
+		throttle(() => {
+			setLetters(shuffleLetters(letters));
+		}, 300),
+		[letters]
+	);
+
+	useEffect(() => {
+		if (allWords.length && allWords.every((word) => guessedWords.has(word))) {
+			handleNewLetters();
+		}
+	}, [allWords, guessedWords, handleNewLetters]);
 
 	return (
 		<div className='flex flex-col p-4 max-w-4xl mx-auto mt-8'>
@@ -106,16 +141,17 @@ const TrPage = () => {
 								addTime={additionalTime}
 							/>
 
-							{score >= 50 && (
-								<Button
-									onClick={() => {
-										setScore((prevScore) => prevScore - 50);
-										setLetters(refreshLetters(dictionary));
-									}}
-									className='font-bold px-3 border border-black shadow-[0px_3px_1px] text-base sm:text-xl rounded-md bg-cream text-slate-900'>
-									Yeni Harf Seti Al (-50)
-								</Button>
-							)}
+							<GameControls
+								letters={letters}
+								dictionary={dictionary}
+								score={score}
+								onShuffle={handleShuffleLetters}
+								onGetNewLetters={handleNewLetters}
+								guessedWords={guessedWords}
+								setHints={setHints}
+								hints={hints}
+								setScore={setScore}
+							/>
 
 							<div className='flex items-center justify-center border-4 bg-cream rounded-md rounded-tr-md p-1 shadow-[0px_3px_1px] border-primary w-32 relative'>
 								<p className='font-bold text-xl sm:text-3xl'>{score}</p>
@@ -123,10 +159,8 @@ const TrPage = () => {
 						</div>
 						<LetterHive
 							letters={letters}
-							onShuffle={handleShuffleLetters}
 							isError={isError}
 							onLetterClick={(letter: string) => setWord(word + letter)}
-							dictionary={dictionary}
 						/>
 						<WordInput
 							onSubmit={handleWordSubmit}

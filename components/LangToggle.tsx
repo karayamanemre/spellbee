@@ -21,7 +21,7 @@ export function LangToggle() {
 					size='icon'
 					className='rounded-md'>
 					<span className='sr-only'>Toggle language</span>
-					{isTurkish ? "TR" : "EN"}
+					<p className='text-cream'>{isTurkish ? "TR" : "EN"}</p>
 				</Button>
 			</DropdownMenuTrigger>
 			<DropdownMenuContent className='w-max'>
