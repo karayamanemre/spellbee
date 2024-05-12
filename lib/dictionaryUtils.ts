@@ -1,7 +1,7 @@
 type WordList = string[];
 
 async function loadDictionary(language: string): Promise<WordList> {
-	const response = await fetch(`https://emrekarayaman.me/dictionary.json`);
+	const response = await fetch(`/api/dictionary`);
 	if (!response.ok) {
 		throw new Error("Failed to load dictionary");
 	}
