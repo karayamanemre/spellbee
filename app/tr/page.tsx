@@ -126,10 +126,10 @@ const TrPage = () => {
 			)}
 
 			{!gameStarted && !isLoading ? (
-				<div className='flex items-center justify-center h-[250px] mt-10'>
+				<div className='flex drop-shadow-2xl items-center justify-center h-[250px] mt-10'>
 					<Button
 						onClick={startGame}
-						className='bg-turqoise font-bold text-white rounded-lg h-20 w-20 sm:h-24 sm:w-32 flex items-center justify-center shadow-[0px_7px_2px_#4f766f] hover:scale-110 letter-flip'>
+						className='bg-turqoise font-bold text-white rounded-lg h-20 w-20 sm:h-24 sm:w-32 flex items-center drop-shadow-2xl justify-center shadow-[0px_7px_2px_#4f766f] hover:scale-110 letter-flip'>
 						<Play size={40} />
 					</Button>
 				</div>

@@ -126,10 +126,10 @@ const EnPage = () => {
 			)}
 
 			{!gameStarted && !isLoading ? (
-				<div className='flex items-center justify-center h-[250px] mt-10'>
+				<div className='flex items-center justify-center h-[250px] mt-10 drop-shadow-3xl'>
 					<Button
 						onClick={startGame}
-						className='bg-turqoise font-bold text-white rounded-lg h-20 w-20 sm:h-24 sm:w-32 flex items-center justify-center shadow-[0px_7px_2px_#4f766f] hover:scale-110 letter-flip'>
+						className='bg-turqoise font-bold text-white rounded-lg h-20 w-20 sm:h-24 sm:w-32 flex items-center justify-center shadow-[0px_7px_2px_#4f766f] hover:scale-110 letter-flip drop-shadow-2xl'>
 						<Play size={40} />
 					</Button>
 				</div>
