@@ -1,19 +1,26 @@
 import React, { useState, useEffect } from "react";
 import { Button } from "./ui/button";
-import { ShuffleIcon } from "lucide-react";
+import { Lightbulb, ShuffleIcon } from "lucide-react";
 import {
 	Tooltip,
 	TooltipContent,
 	TooltipProvider,
 	TooltipTrigger,
 } from "@/components/ui/tooltip";
+import {
+	Popover,
+	PopoverContent,
+	PopoverTrigger,
+} from "@/components/ui/popover";
 import useGetLanguage from "@/lib/useGetLanguage";
+import { findFormableWords } from "@/lib/dictionaryUtils";
 
 interface LetterHiveProps {
 	letters: string[];
 	onShuffle: () => void;
 	isError: boolean;
 	onLetterClick: (letter: string) => void;
+	dictionary: string[];
 }
 
 const LetterHive: React.FC<LetterHiveProps> = ({
@@ -21,9 +28,23 @@ const LetterHive: React.FC<LetterHiveProps> = ({
 	onShuffle,
 	isError,
 	onLetterClick,
+	dictionary,
 }) => {
 	const languageCode = useGetLanguage();
 	const isTurkish = languageCode === "tr";
+	const [hints, setHints] = useState<string[]>([]);
+	const [showHints, setShowHints] = useState(false);
+
+	const handleShowHints = () => {
+		const formableWords = findFormableWords(letters, dictionary);
+		setHints(formableWords);
+		setShowHints(true);
+	};
+
+	useEffect(() => {
+		setHints([]);
+		setShowHints(false);
+	}, [letters]);
 
 	const colors = [
 		"bg-mustard shadow-[0px_8px_1px_hsl(33_44%_43%)]",
@@ -49,7 +70,43 @@ const LetterHive: React.FC<LetterHiveProps> = ({
 	}, [letters]);
 
 	return (
-		<div className='flex flex-col items-center my-10 h-[100px]'>
+		<div className='flex flex-col items-center h-[300px]'>
+			<TooltipProvider>
+				<Tooltip delayDuration={10}>
+					<TooltipTrigger>
+						<Popover>
+							<PopoverTrigger asChild>
+								<Button
+									onClick={handleShowHints}
+									variant='ghost'
+									className='bg-cream p-2 my-10 rounded-md shadow-[0px_3px_1px] hover:bg-mustard text-black'>
+									<Lightbulb />
+								</Button>
+							</PopoverTrigger>
+							<PopoverContent>
+								{showHints && (
+									<div>
+										<p>
+											{isTurkish
+												? "Bulabileceğiniz kelimeler:"
+												: "Words you can form:"}
+										</p>
+										{hints.map((hint, index) => (
+											<div key={index}>{hint}</div>
+										))}
+									</div>
+								)}
+							</PopoverContent>
+						</Popover>
+					</TooltipTrigger>
+					<TooltipContent>
+						<p className='text-center'>
+							{isTurkish ? "İpucu göster" : "Show hints"}
+						</p>
+					</TooltipContent>
+				</Tooltip>
+			</TooltipProvider>
+
 			<div className='flex justify-center items-center flex-wrap mb-4 gap-[2px]'>
 				{randomizedLetters.map((letter, index) => (
 					<span

@@ -50,7 +50,7 @@ const WordInput: React.FC<WordInputProps> = ({ onSubmit, word, setWord }) => {
 				<Button
 					variant='ghost'
 					type='submit'
-					className='absolute top-[8px] right-[1px] bg-cream hover:bg-mustard p-2 rounded-md'>
+					className='absolute top-2 right-[1px] bg-cream p-2 rounded-md shadow-[0px_3px_1px] hover:bg-mustard text-black'>
 					<CornerDownLeft />
 				</Button>
 			</div>

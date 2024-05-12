@@ -71,9 +71,9 @@ const EnPage = () => {
 	};
 
 	return (
-		<div className='flex flex-col p-4 max-w-4xl mx-auto mt-8'>
+		<div className='flex flex-col p-4 max-w-4xl mx-auto mt-8 h-max'>
 			{isLoading && (
-				<div className='flex items-center justify-center mx-auto mt-20'>
+				<div className='flex items-center justify-center mx-auto mt-32'>
 					<div className='three-body'>
 						<div className='three-body__dot'></div>
 						<div className='three-body__dot'></div>
@@ -98,7 +98,7 @@ const EnPage = () => {
 				</div>
 			) : (
 				!isLoading && (
-					<div className='text-center flex flex-col gap-20 items-center w-full'>
+					<div className='text-center flex flex-col gap-6 items-center w-full'>
 						<div className='flex items-center justify-between mx-auto w-full'>
 							<Timer
 								initialTime={60}
@@ -121,17 +121,20 @@ const EnPage = () => {
 								<p className='font-bold text-xl sm:text-3xl'>{score}</p>
 							</div>
 						</div>
-						<LetterHive
-							letters={letters}
-							onShuffle={handleShuffleLetters}
-							isError={isError}
-							onLetterClick={(letter: string) => setWord(word + letter)}
-						/>
-						<WordInput
-							onSubmit={handleWordSubmit}
-							word={word}
-							setWord={setWord}
-						/>
+						<div className='flex flex-col gap-10'>
+							<LetterHive
+								letters={letters}
+								onShuffle={handleShuffleLetters}
+								isError={isError}
+								onLetterClick={(letter: string) => setWord(word + letter)}
+								dictionary={dictionary}
+							/>
+							<WordInput
+								onSubmit={handleWordSubmit}
+								word={word}
+								setWord={setWord}
+							/>
+						</div>
 					</div>
 				)
 			)}

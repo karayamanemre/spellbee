@@ -126,6 +126,7 @@ const TrPage = () => {
 							onShuffle={handleShuffleLetters}
 							isError={isError}
 							onLetterClick={(letter: string) => setWord(word + letter)}
+							dictionary={dictionary}
 						/>
 						<WordInput
 							onSubmit={handleWordSubmit}

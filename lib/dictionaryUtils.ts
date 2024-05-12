@@ -30,8 +30,8 @@ function selectSevenRandomLetters(words: WordList): string[] {
 		shuffleArray(allLetters);
 		selectedLetters = allLetters.slice(0, 7);
 		attempts++;
-		if (attempts > 100) break; // Limit attempts to avoid potential infinite loops
-	} while (!canFormAtLeastTwoWords(selectedLetters, words, 2));
+		if (attempts > 100) break;
+	} while (!canFormAtLeastTwoWords(selectedLetters, words, 3));
 
 	return selectedLetters;
 }
@@ -61,11 +61,42 @@ function canFormAtLeastTwoWords(
 		) {
 			matchingWordsCount++;
 			if (matchingWordsCount >= minimumWords) {
-				return true; // Return true as soon as we find enough words
+				return true;
 			}
 		}
 	}
-	return false; // Return false if we couldn't find enough words
+	return false;
 }
 
-export { loadDictionary, selectSevenRandomLetters, shuffleArray };
+function findFormableWords(letters: string[], dictionary: WordList): string[] {
+	const letterCounts = letters.reduce((counts, letter) => {
+		counts[letter] = (counts[letter] || 0) + 1;
+		return counts;
+	}, {} as Record<string, number>);
+
+	const formableWords = [];
+
+	for (const word of dictionary) {
+		const wordCounts = Array.from(word.toUpperCase()).reduce((counts, char) => {
+			counts[char] = (counts[char] || 0) + 1;
+			return counts;
+		}, {} as Record<string, number>);
+
+		if (
+			Object.keys(wordCounts).every(
+				(char) => wordCounts[char] <= (letterCounts[char] || 0)
+			)
+		) {
+			formableWords.push(word);
+		}
+	}
+
+	return formableWords;
+}
+
+export {
+	loadDictionary,
+	selectSevenRandomLetters,
+	shuffleArray,
+	findFormableWords,
+};
