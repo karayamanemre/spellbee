@@ -84,8 +84,14 @@ const EnPage = () => {
 	};
 
 	const handleWordSubmit = (submittedWord: string) => {
+		const normalizedWord = submittedWord.toLowerCase();
+		if (guessedWords.has(normalizedWord)) {
+			setIsError(true);
+			setTimeout(() => setIsError(false), 3000);
+			return;
+		}
 		if (
-			dictionary.includes(submittedWord.toLowerCase()) &&
+			dictionary.includes(normalizedWord) &&
 			validateWord(submittedWord, letters)
 		) {
 			const pointsEarned = submittedWord.length * 5;

@@ -20,7 +20,7 @@ export const refreshLetters = (words: string[]) => {
 
 export const validateWord = (word: string, availableLetters: string[]) => {
 	let tempLetters = availableLetters.slice();
-	for (let char of word.toUpperCase()) {
+	for (let char of word) {
 		if (!tempLetters.includes(char)) {
 			return false;
 		}

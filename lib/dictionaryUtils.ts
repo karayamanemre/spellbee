@@ -21,7 +21,6 @@ function selectSevenRandomLetters(words: WordList): string[] {
 	const allLetters = words
 		.join("")
 		.replace(/[^a-zşğüöçı]/gi, "")
-		.toUpperCase()
 		.split("");
 	let selectedLetters: string[] = [];
 	let attempts = 0;
@@ -49,7 +48,7 @@ function canFormAtLeastTwoWords(
 	let matchingWordsCount = 0;
 
 	for (const word of dictionary) {
-		const wordCounts = Array.from(word.toUpperCase()).reduce((counts, char) => {
+		const wordCounts = Array.from(word).reduce((counts, char) => {
 			counts[char] = (counts[char] || 0) + 1;
 			return counts;
 		}, {} as Record<string, number>);
@@ -77,7 +76,7 @@ function findFormableWords(letters: string[], dictionary: WordList): string[] {
 	const formableWords = [];
 
 	for (const word of dictionary) {
-		const wordCounts = Array.from(word.toUpperCase()).reduce((counts, char) => {
+		const wordCounts = Array.from(word).reduce((counts, char) => {
 			counts[char] = (counts[char] || 0) + 1;
 			return counts;
 		}, {} as Record<string, number>);

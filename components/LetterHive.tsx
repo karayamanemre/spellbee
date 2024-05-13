@@ -1,3 +1,4 @@
+import useGetLanguage from "@/lib/useGetLanguage";
 import React, { useState, useEffect } from "react";
 
 interface LetterHiveProps {
@@ -11,6 +12,9 @@ const LetterHive: React.FC<LetterHiveProps> = ({
 	isError,
 	onLetterClick,
 }) => {
+	const languageCode = useGetLanguage();
+	const isTurkish = languageCode === "tr";
+
 	const colors = [
 		"bg-mustard shadow-[0px_8px_1px_hsl(33_44%_43%)]",
 		"bg-turqoise shadow-[0px_8px_1px_hsl(169_20%_39%)]",
@@ -45,7 +49,9 @@ const LetterHive: React.FC<LetterHiveProps> = ({
 					} rounded-lg h-12 w-12 sm:h-20 sm:w-20 flex items-center justify-center hover:scale-110  letter-flip ${
 						isError ? "shake error-bg" : ""
 					}`}>
-					{letter.letter}
+					{isTurkish
+						? letter.letter.toLocaleUpperCase("tr-TR")
+						: letter.letter.toUpperCase()}
 				</span>
 			))}
 		</div>
