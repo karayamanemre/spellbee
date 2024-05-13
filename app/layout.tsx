@@ -25,7 +25,7 @@ export default function RootLayout({
 		<html lang='tr'>
 			<body
 				className={cn(
-					"max-h-screen font-sans antialiased ",
+					"max-h-screen flex items-center justify-center font-sans antialiased ",
 					fontSans.variable
 				)}>
 				{children}

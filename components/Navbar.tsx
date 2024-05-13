@@ -3,7 +3,7 @@ import { LangToggle } from "./LangToggle";
 
 export const Navbar = () => {
 	return (
-		<nav className='p-1 flex items-center w-full justify-center fixed top-0 px-2 mx-auto gap-40'>
+		<nav className='p-1 flex items-center max-w-4xl w-full justify-between fixed top-0 px-4 mx-auto'>
 			<LangToggle />
 			<Info />
 		</nav>
