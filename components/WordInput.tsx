@@ -38,8 +38,6 @@ const WordInput: React.FC<WordInputProps> = ({ onSubmit, word, setWord }) => {
 					ref={inputRef}
 					type='text'
 					value={word}
-					// change it localeuppercase if turkish
-
 					onChange={(e) => {
 						setWord(e.target.value);
 						if (inputRef.current) inputRef.current.focus();
