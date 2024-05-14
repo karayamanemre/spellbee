@@ -99,7 +99,7 @@ const EnPage = () => {
 			setScore(newScore);
 			setScoreAnimation({ show: true, points: pointsEarned });
 			setTimeout(() => setScoreAnimation({ show: false, points: 0 }), 1000);
-			setAdditionalTime(15);
+			setAdditionalTime(5);
 			setTimeout(() => setAdditionalTime(0), 100);
 			guessedWords.add(submittedWord.toLowerCase());
 			setGuessedWords(new Set(guessedWords));
