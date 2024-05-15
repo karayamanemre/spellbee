@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 import { CornerDownLeft } from "lucide-react";
@@ -15,16 +15,20 @@ const WordInput: React.FC<WordInputProps> = ({ onSubmit, word, setWord }) => {
 	const languageCode = useGetLanguage();
 	const isTurkish = languageCode === "tr";
 
+	const [shouldFocus, setShouldFocus] = useState(false);
+
 	useEffect(() => {
-		if (inputRef.current) {
+		if (shouldFocus && inputRef.current) {
 			inputRef.current.focus();
+			setShouldFocus(false);
 		}
-	}, [word]);
+	}, [shouldFocus]);
 
 	const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
 		event.preventDefault();
-		onSubmit(word);
+		onSubmit(isTurkish ? word.toLocaleLowerCase("tr-TR") : word.toLowerCase());
 		setWord("");
+		setShouldFocus(true);
 	};
 
 	const placeholderText = isTurkish ? "KELİME GİRİN" : "ENTER A WORD";
@@ -37,14 +41,12 @@ const WordInput: React.FC<WordInputProps> = ({ onSubmit, word, setWord }) => {
 				<Input
 					ref={inputRef}
 					type='text'
-					value={word}
-					onChange={(e) => {
-						setWord(e.target.value);
-						if (inputRef.current) inputRef.current.focus();
-					}}
+					value={
+						isTurkish ? word.toLocaleUpperCase("tr-TR") : word.toUpperCase()
+					}
+					onChange={(e) => setWord(e.target.value)}
 					placeholder={placeholderText}
 					autoComplete='off'
-					autoFocus
 					className={`h-[40px] lg:h-[50px] text-2xl lg:text-3xl border-cream text-cream py-2 outline-none focus:ring-0 border-b-2 shadow-[0px_4px_0px_#000000] rounded-none uppercase`}
 				/>
 				<Button
