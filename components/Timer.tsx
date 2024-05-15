@@ -47,7 +47,7 @@ const Timer: React.FC<TimerProps> = ({ initialTime, onTimeUp, addTime }) => {
 			<p className='font-bold text-xl sm:text-3xl'>{formatTime(timeLeft)}</p>
 			{showAnimation && (
 				<p className='time-add-animation ml-[88px] text-xl font-bold absolute top-2 -right-10'>
-					+15
+					+10
 				</p>
 			)}
 		</div>

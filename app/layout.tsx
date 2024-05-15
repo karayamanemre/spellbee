@@ -22,7 +22,9 @@ export default function RootLayout({
 	children: React.ReactNode;
 }>) {
 	return (
-		<html lang='tr'>
+		<html
+			lang='tr'
+			maximum-scale='1'>
 			<body
 				className={cn(
 					"max-h-screen flex items-center justify-center font-sans antialiased ",

@@ -31,6 +31,9 @@ const EnPage = () => {
 	const [word, setWord] = useState("");
 	const [guessedWords, setGuessedWords] = useState<Set<string>>(new Set());
 	const [hints, setHints] = useState<string[]>([]);
+	const [activeLetterIndex, setActiveLetterIndex] = useState<number | null>(
+		null
+	);
 
 	const handleResetGame = () => {
 		setGameStarted(false);
@@ -79,7 +82,7 @@ const EnPage = () => {
 	};
 
 	const handleTimeUp = () => {
-		setError(`Süre doldu! Skorunuz: ${score}`);
+		setError(`Süre doldu! Puanınız: ${score}`);
 		setGameStarted(false);
 	};
 
@@ -99,7 +102,7 @@ const EnPage = () => {
 			setScore(newScore);
 			setScoreAnimation({ show: true, points: pointsEarned });
 			setTimeout(() => setScoreAnimation({ show: false, points: 0 }), 1000);
-			setAdditionalTime(5);
+			setAdditionalTime(10);
 			setTimeout(() => setAdditionalTime(0), 100);
 			guessedWords.add(submittedWord.toLowerCase());
 			setGuessedWords(new Set(guessedWords));
@@ -131,6 +134,19 @@ const EnPage = () => {
 			handleNewLetters();
 		}
 	}, [allWords, guessedWords, handleNewLetters]);
+
+	useEffect(() => {
+		const handleKeyPress = (event: KeyboardEvent) => {
+			const key = event.key.toUpperCase();
+			const index = letters.findIndex((l) => l.toUpperCase() === key);
+			if (index !== -1) {
+				setActiveLetterIndex(index);
+				setTimeout(() => setActiveLetterIndex(null), 200);
+			}
+		};
+		window.addEventListener("keydown", handleKeyPress);
+		return () => window.removeEventListener("keydown", handleKeyPress);
+	}, [letters]);
 
 	return (
 		<div className='flex flex-col p-4 w-full max-w-4xl mx-auto mt-8'>
@@ -195,6 +211,8 @@ const EnPage = () => {
 							letters={letters}
 							isError={isError}
 							onLetterClick={(letter: string) => setWord(word + letter)}
+							activeLetterIndex={activeLetterIndex}
+							setActiveLetterIndex={setActiveLetterIndex}
 						/>
 						<WordInput
 							onSubmit={handleWordSubmit}

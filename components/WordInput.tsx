@@ -1,7 +1,7 @@
 import React, { useRef, useState, useEffect } from "react";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
-import { CornerDownLeft } from "lucide-react";
+import { CornerDownLeft, Delete } from "lucide-react";
 import useGetLanguage from "@/lib/useGetLanguage";
 
 interface WordInputProps {
@@ -31,6 +31,24 @@ const WordInput: React.FC<WordInputProps> = ({ onSubmit, word, setWord }) => {
 		setShouldFocus(true);
 	};
 
+	// Add event listener to control focus behavior on mobile
+	useEffect(() => {
+		const handleFocus = (event: FocusEvent) => {
+			if (window.innerWidth <= 768) {
+				// Check if the device could be a mobile device
+				event.preventDefault(); // Prevent scrolling into view
+				// Optionally adjust scroll position manually here if needed
+			}
+		};
+
+		const inputElement = inputRef.current;
+		inputElement?.addEventListener("focus", handleFocus);
+
+		return () => {
+			inputElement?.removeEventListener("focus", handleFocus);
+		};
+	}, []);
+
 	const placeholderText = isTurkish ? "KELİME GİRİN" : "ENTER A WORD";
 
 	return (
@@ -49,6 +67,14 @@ const WordInput: React.FC<WordInputProps> = ({ onSubmit, word, setWord }) => {
 					autoComplete='off'
 					className={`h-[40px] lg:h-[50px] text-2xl lg:text-3xl border-cream text-cream py-2 outline-none focus:ring-0 border-b-2 shadow-[0px_4px_0px_#000000] rounded-none uppercase`}
 				/>
+				<Button
+					variant='ghost'
+					type='button'
+					name='backspace button'
+					onClick={() => setWord(word.slice(0, word.length - 1))}
+					className='absolute -top-1 lg:top-2 right-[50px] bg-brick p-2 rounded-md shadow-[0px_3px_1px] hover:bg-brick text-black'>
+					<Delete />
+				</Button>
 				<Button
 					variant='ghost'
 					type='submit'

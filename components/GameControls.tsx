@@ -17,7 +17,6 @@ import {
 	AlertDialogAction,
 	AlertDialogCancel,
 	AlertDialogContent,
-	AlertDialogDescription,
 	AlertDialogFooter,
 	AlertDialogHeader,
 	AlertDialogTitle,
@@ -82,7 +81,7 @@ const GameControls: React.FC<GameControlsProps> = ({
 		<div className='flex items-center justify-around space-x-1 lg:space-x-4'>
 			<TooltipProvider>
 				<Tooltip delayDuration={10}>
-					<TooltipTrigger>
+					<TooltipTrigger asChild>
 						<Popover>
 							<PopoverTrigger asChild>
 								<Button
