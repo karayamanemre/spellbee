@@ -6,7 +6,7 @@ interface LetterHiveProps {
 	isError: boolean;
 	onLetterClick: (letter: string) => void;
 	activeLetterIndex: number | null;
-	setActiveLetterIndex: (index: number | null) => void; // Ensure this is a function
+	setActiveLetterIndex: (index: number | null) => void;
 }
 
 interface StyledLetter {
@@ -39,13 +39,13 @@ const LetterHive: React.FC<LetterHiveProps> = ({
 		e: React.TouchEvent<HTMLSpanElement>,
 		index: number
 	) => {
-		e.preventDefault(); // Prevent default touch behavior
+		e.preventDefault();
 		setActiveLetterIndex(index);
 		onLetterClick(randomizedLetters[index].letter);
 	};
 
 	const handleTouchEnd = (e: React.TouchEvent<HTMLSpanElement>) => {
-		e.preventDefault(); // Ensure touch end doesn't trigger default behavior
+		e.preventDefault();
 		setActiveLetterIndex(null);
 	};
 

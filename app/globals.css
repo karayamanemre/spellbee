@@ -242,9 +242,8 @@ body {
 }
 
 .error-bg {
-	background-color: hsl(338, 12%, 32%) !important; /* Error state color */
+	background-color: hsl(338, 12%, 32%) !important;
 	box-shadow: 0px 8px 1px hsl(4, 16%, 21%) !important;
-	/* Add transition for background color */
 }
 
 .score-add-animation {

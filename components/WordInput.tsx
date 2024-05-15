@@ -31,13 +31,11 @@ const WordInput: React.FC<WordInputProps> = ({ onSubmit, word, setWord }) => {
 		setShouldFocus(true);
 	};
 
-	// Add event listener to control focus behavior on mobile
 	useEffect(() => {
 		const handleFocus = (event: FocusEvent) => {
 			if (window.innerWidth <= 768) {
-				// Check if the device could be a mobile device
-				event.preventDefault(); // Prevent scrolling into view
-				// Optionally adjust scroll position manually here if needed
+				event.preventDefault();
+				window.scrollTo(0, 0);
 			}
 		};
 
@@ -72,7 +70,7 @@ const WordInput: React.FC<WordInputProps> = ({ onSubmit, word, setWord }) => {
 					type='button'
 					name='backspace button'
 					onClick={() => setWord(word.slice(0, word.length - 1))}
-					className='absolute -top-1 lg:top-2 right-[50px] bg-brick p-2 rounded-md shadow-[0px_3px_1px] hover:bg-brick text-black'>
+					className='absolute -top-1 lg:top-2 right-[60px] bg-brick p-2 rounded-md shadow-[0px_3px_1px] hover:bg-brick text-black'>
 					<Delete />
 				</Button>
 				<Button
