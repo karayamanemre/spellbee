@@ -32,20 +32,13 @@ const WordInput: React.FC<WordInputProps> = ({ onSubmit, word, setWord }) => {
 	};
 
 	useEffect(() => {
-		const handleFocus = (event: FocusEvent) => {
-			if (window.innerWidth <= 768) {
-				event.preventDefault();
-				window.scrollTo(0, 0);
-			}
-		};
-
-		const inputElement = inputRef.current;
-		inputElement?.addEventListener("focus", handleFocus);
-
-		return () => {
-			inputElement?.removeEventListener("focus", handleFocus);
-		};
-	}, []);
+		const isMobile = /iPhone|iPad|iPod|Android|WebOS/i.test(
+			navigator.userAgent
+		);
+		if (isMobile) {
+			inputRef.current?.setAttribute("readonly", "readonly");
+		}
+	}, [inputRef]);
 
 	const placeholderText = isTurkish ? "KELİME GİRİN" : "ENTER A WORD";
 
@@ -63,7 +56,7 @@ const WordInput: React.FC<WordInputProps> = ({ onSubmit, word, setWord }) => {
 					onChange={(e) => setWord(e.target.value)}
 					placeholder={placeholderText}
 					autoComplete='off'
-					className={`h-[40px] lg:h-[50px] text-2xl lg:text-3xl border-cream text-cream py-2 outline-none focus:ring-0 border-b-2 shadow-[0px_4px_0px_#000000] rounded-none uppercase`}
+					className={`h-[40px] lg:h-[50px] text-2xl lg:text-3xl border-cream text-cream py-2 outline-none focus:ring-0 border-b-2 shadow-[0px_4px_0px_#000000] rounded-none uppercase read-only:`}
 				/>
 				<Button
 					variant='ghost'
