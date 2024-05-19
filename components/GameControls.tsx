@@ -55,6 +55,8 @@ const GameControls: React.FC<GameControlsProps> = ({
 	const languageCode = useGetLanguage();
 	const isTurkish = languageCode === "tr";
 	const [showHints, setShowHints] = useState(false);
+	const [shakeHint, setShakeHint] = useState(false);
+	const [lastWordFoundTime, setLastWordFoundTime] = useState(Date.now());
 
 	const handleShowHints = () => {
 		if (score >= 20) {
@@ -70,6 +72,23 @@ const GameControls: React.FC<GameControlsProps> = ({
 			}
 		}
 	};
+
+	useEffect(() => {
+		const interval = setInterval(() => {
+			if (Date.now() - lastWordFoundTime >= 30000 && score >= 20) {
+				setShakeHint(true);
+				setTimeout(() => setShakeHint(false), 1000);
+			}
+		}, 1000);
+
+		return () => clearInterval(interval);
+	}, [score, lastWordFoundTime]);
+
+	useEffect(() => {
+		if (guessedWords.size > 0) {
+			setLastWordFoundTime(Date.now());
+		}
+	}, [guessedWords]);
 
 	useEffect(() => {
 		setHints([]);
@@ -89,7 +108,9 @@ const GameControls: React.FC<GameControlsProps> = ({
 									onClick={() => {
 										handleShowHints();
 									}}
-									className='bg-cream p-2 rounded-md shadow-[0px_3px_1px] hover:bg-mustard text-black disabled:cursor-default'>
+									className={`bg-cream p-2 rounded-md shadow-[0px_3px_1px] hover:bg-mustard text-black disabled:cursor-default ${
+										shakeHint ? "shake-2" : ""
+									}`}>
 									<Lightbulb />
 								</Button>
 							</PopoverTrigger>
