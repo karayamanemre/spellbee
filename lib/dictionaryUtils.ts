@@ -18,29 +18,31 @@ function shuffleArray(array: string[]): string[] {
 }
 
 function selectSevenRandomLetters(words: WordList): string[] {
-	const allLetters = words
-		.join("")
-		.replace(/[^a-zşğüöçı]/gi, "")
-		.split("");
+	const sevenLetterWords = words.filter((word) => word.length === 7);
 	let selectedLetters: string[] = [];
 	let attempts = 0;
 
+	if (sevenLetterWords.length === 0) {
+		throw new Error("No seven-letter words available in the dictionary.");
+	}
+
 	do {
-		shuffleArray(allLetters);
-		selectedLetters = allLetters.slice(0, 7);
+		const baseWord =
+			sevenLetterWords[Math.floor(Math.random() * sevenLetterWords.length)];
+		selectedLetters = baseWord.split("");
+
+		shuffleArray(selectedLetters);
+
 		attempts++;
 		if (attempts > 100) break;
-	} while (
-		!canFormAtLeastTwoWords(selectedLetters, words, 3) ||
-		!hasLongerWords(selectedLetters, words)
-	);
+	} while (!canFormAtLeastTwoWords(selectedLetters, words, 3));
 
 	return selectedLetters;
 }
 
 function hasLongerWords(letters: string[], dictionary: WordList): boolean {
 	return dictionary.some((word) => {
-		if (word.length < 5) return false;
+		if (word.length != 7) return false;
 		const wordLetterCounts = getLetterCounts(word);
 		return Object.keys(wordLetterCounts).every(
 			(char) =>

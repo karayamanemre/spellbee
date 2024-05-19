@@ -59,15 +59,15 @@ const GameControls: React.FC<GameControlsProps> = ({
 	const handleShowHints = () => {
 		if (score >= 20) {
 			const formableWords = findFormableWords(letters, dictionary).filter(
-				(word) => !hints.includes(word)
+				(word) => !hints.includes(word) && !guessedWords.has(word)
 			);
 			if (formableWords.length > 0) {
 				const randomIndex = Math.floor(Math.random() * formableWords.length);
 				const newHint = formableWords[randomIndex];
 				setHints([...hints, newHint]);
+				setShowHints(true);
+				setScore(score - 20);
 			}
-			setShowHints(true);
-			setScore(score - 20);
 		}
 	};
 
@@ -81,14 +81,13 @@ const GameControls: React.FC<GameControlsProps> = ({
 		<div className='flex items-center justify-around space-x-1 lg:space-x-4'>
 			<TooltipProvider>
 				<Tooltip delayDuration={10}>
-					<TooltipTrigger asChild>
+					<TooltipTrigger>
 						<Popover>
 							<PopoverTrigger asChild>
 								<Button
 									disabled={score < 20}
 									onClick={() => {
 										handleShowHints();
-										setScore(score - 20);
 									}}
 									className='bg-cream p-2 rounded-md shadow-[0px_3px_1px] hover:bg-mustard text-black disabled:cursor-default'>
 									<Lightbulb />
