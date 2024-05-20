@@ -184,20 +184,14 @@ body {
 }
 
 .time-add-animation {
+	animation: slideUpFade 1s ease-in-out;
 	position: absolute;
-	color: rgb(6, 159, 6);
-	animation: fadeMoveUp 1s ease-out;
-}
-
-@keyframes fadeMoveUp {
-	0% {
-		opacity: 1;
-		transform: translateY(0px);
-	}
-	100% {
-		opacity: 0;
-		transform: translateY(-20px);
-	}
+	top: -20px;
+	left: 130px;
+	color: #4caf50;
+	background-color: rgb(234, 231, 227);
+	padding: 2px;
+	border-radius: 10px;
 }
 
 @keyframes flip-in {
@@ -250,8 +244,11 @@ body {
 	animation: slideUpFade 1s ease-in-out;
 	position: absolute;
 	top: -20px;
-	right: 80px;
+	right: 130px;
 	color: #4caf50;
+	background-color: rgb(234, 231, 227);
+	padding: 2px;
+	border-radius: 10px;
 }
 
 @keyframes slideUpFade {
