@@ -9,7 +9,7 @@ interface TimerProps {
 const Timer: React.FC<TimerProps> = ({ initialTime, onTimeUp, addTime }) => {
 	const [timeLeft, setTimeLeft] = useState(initialTime);
 	const [showAnimation, setShowAnimation] = useState(false);
-	const [animationAddTime, setAnimationAddTime] = useState(0); // Store the addTime for animation
+	const [animationAddTime, setAnimationAddTime] = useState(0);
 	const intervalId = useRef<NodeJS.Timeout | null>(null);
 
 	const formatTime = (seconds: number) => {
@@ -41,16 +41,17 @@ const Timer: React.FC<TimerProps> = ({ initialTime, onTimeUp, addTime }) => {
 				clearInterval(intervalId.current);
 			}
 		};
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
 	useEffect(() => {
 		if (addTime > 0) {
 			setTimeLeft((prevTime) => prevTime + addTime);
-			setAnimationAddTime(addTime); // Update animationAddTime when addTime changes and is greater than 0
+			setAnimationAddTime(addTime);
 			setShowAnimation(true);
 			setTimeout(() => {
 				setShowAnimation(false);
-				setAnimationAddTime(0); // Reset animationAddTime after animation
+				setAnimationAddTime(0);
 			}, 1000);
 		}
 	}, [addTime]);

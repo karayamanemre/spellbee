@@ -141,7 +141,7 @@ const EnPage = () => {
 			const index = letters.findIndex((l) => l.toUpperCase() === key);
 			if (index !== -1) {
 				setActiveLetterIndex(index);
-				setTimeout(() => setActiveLetterIndex(null), 200); // Reset after a short delay
+				setTimeout(() => setActiveLetterIndex(null), 200);
 			}
 		};
 		window.addEventListener("keydown", handleKeyPress);
