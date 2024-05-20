@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 
 interface TimerProps {
 	initialTime: number;
@@ -9,8 +9,9 @@ interface TimerProps {
 const Timer: React.FC<TimerProps> = ({ initialTime, onTimeUp, addTime }) => {
 	const [timeLeft, setTimeLeft] = useState(initialTime);
 	const [showAnimation, setShowAnimation] = useState(false);
+	const intervalId = useRef<NodeJS.Timeout | null>(null);
 
-	const formatTime = (seconds: any) => {
+	const formatTime = (seconds: number) => {
 		const minutes = Math.floor(seconds / 60);
 		const remainingSeconds = seconds % 60;
 		return `${minutes}:${
@@ -23,16 +24,23 @@ const Timer: React.FC<TimerProps> = ({ initialTime, onTimeUp, addTime }) => {
 	}, [initialTime]);
 
 	useEffect(() => {
-		if (timeLeft === 0) {
-			onTimeUp();
-			return;
-		}
-		const timer = setTimeout(() => {
-			setTimeLeft((prev) => prev - 1);
+		intervalId.current = setInterval(() => {
+			setTimeLeft((prevTime) => {
+				if (prevTime <= 1) {
+					clearInterval(intervalId.current as NodeJS.Timeout);
+					onTimeUp();
+					return 0;
+				}
+				return prevTime - 1;
+			});
 		}, 1000);
 
-		return () => clearTimeout(timer);
-	}, [timeLeft, onTimeUp]);
+		return () => {
+			if (intervalId.current) {
+				clearInterval(intervalId.current);
+			}
+		};
+	}, []);
 
 	useEffect(() => {
 		if (addTime > 0) {
@@ -47,7 +55,7 @@ const Timer: React.FC<TimerProps> = ({ initialTime, onTimeUp, addTime }) => {
 			<p className='font-bold text-xl sm:text-3xl'>{formatTime(timeLeft)}</p>
 			{showAnimation && (
 				<p className='time-add-animation ml-[88px] text-xl font-bold absolute top-2 -right-10'>
-					+10
+					+{addTime}
 				</p>
 			)}
 		</div>
