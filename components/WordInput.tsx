@@ -24,21 +24,16 @@ const WordInput: React.FC<WordInputProps> = ({ onSubmit, word, setWord }) => {
 		}
 	}, [shouldFocus]);
 
-	const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-		event.preventDefault();
+	const submitCurrentWord = () => {
 		onSubmit(isTurkish ? word.toLocaleLowerCase("tr-TR") : word.toLowerCase());
 		setWord("");
 		setShouldFocus(true);
 	};
 
-	useEffect(() => {
-		const isMobile = /iPhone|iPad|iPod|Android|WebOS/i.test(
-			navigator.userAgent
-		);
-		if (isMobile) {
-			inputRef.current?.setAttribute("readonly", "readonly");
-		}
-	}, [inputRef]);
+	const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+		event.preventDefault();
+		submitCurrentWord();
+	};
 
 	const placeholderText = isTurkish ? "KELİME GİRİN" : "ENTER A WORD";
 
@@ -54,14 +49,22 @@ const WordInput: React.FC<WordInputProps> = ({ onSubmit, word, setWord }) => {
 						isTurkish ? word.toLocaleUpperCase("tr-TR") : word.toUpperCase()
 					}
 					onChange={(e) => setWord(e.target.value)}
+					onKeyDown={(event) => {
+						if (event.key === "Enter") {
+							event.preventDefault();
+							submitCurrentWord();
+						}
+					}}
 					placeholder={placeholderText}
 					autoComplete='off'
+					aria-label={placeholderText}
 					className={`h-[40px] lg:h-[50px] text-2xl lg:text-3xl border-cream text-cream py-2 outline-none focus:ring-0 border-b-2 shadow-[0px_4px_0px_#000000] rounded-none uppercase read-only:`}
 				/>
 				<Button
 					variant='ghost'
 					type='button'
 					name='backspace button'
+					aria-label={isTurkish ? "Son harfi sil" : "Delete last letter"}
 					onClick={() => setWord(word.slice(0, word.length - 1))}
 					className='absolute -top-1 lg:top-2 right-[60px] bg-brick p-2 rounded-md shadow-[0px_3px_1px] hover:bg-brick text-black'>
 					<Delete />
@@ -69,6 +72,7 @@ const WordInput: React.FC<WordInputProps> = ({ onSubmit, word, setWord }) => {
 				<Button
 					variant='ghost'
 					type='submit'
+					aria-label={isTurkish ? "Kelimeyi gönder" : "Submit word"}
 					className='absolute -top-1 lg:top-2 right-[1px] bg-cream p-2 rounded-md shadow-[0px_3px_1px] hover:bg-mustard text-black'>
 					<CornerDownLeft />
 				</Button>
