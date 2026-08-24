@@ -24,32 +24,30 @@ const Info = () => {
 			</DialogTrigger>
 			<DialogContent>
 				<DialogHeader>
-					<DialogTitle>
-						<h3 className='font-semibold text-lg lg:text-xl'>
-							How to Play / Nasıl Oynanır
-						</h3>
+					<DialogTitle className='font-semibold text-lg lg:text-xl'>
+						How to Play / Nasıl Oynanır
 					</DialogTitle>
-					<DialogDescription>
-						<p className='text-base lg:text-lg'>
-							Build words using each displayed letter no more than once. Words
-							must contain at least {GAME_RULES.minimumWordLength} letters. You
-							start with {GAME_RULES.initialScore} points and {GAME_RULES.initialTime}
-							 seconds. Each letter earns {GAME_RULES.pointsPerLetter} points and
-							 each accepted word adds {GAME_RULES.secondsPerWord} seconds. A word
-							 scores only once per game. Hints cost {GAME_RULES.hintCost}, shuffles
-							 cost {GAME_RULES.shuffleCost}, and new letters cost {GAME_RULES.newLettersCost}
-							 points.
-							<br />
-							<br />
-							Gösterilen her harfi en fazla göründüğü kadar kullanarak kelimeler
-							oluşturun. Kelimeler en az {GAME_RULES.minimumWordLength} harfli
-							olmalıdır. Oyuna {GAME_RULES.initialScore} puan ve {GAME_RULES.initialTime}
-							 saniye ile başlarsınız. Her harf {GAME_RULES.pointsPerLetter} puan,
-							 kabul edilen her kelime {GAME_RULES.secondsPerWord} saniye kazandırır.
-							 Bir kelime oyun boyunca yalnızca bir kez puan getirir. İpucu
-							 {GAME_RULES.hintCost}, karıştırma {GAME_RULES.shuffleCost}, yeni
-							 harfler {GAME_RULES.newLettersCost} puandır.
-						</p>
+					<DialogDescription className='text-base lg:text-lg'>
+						Build words using each displayed letter no more than once. Words
+						must contain at least {GAME_RULES.minimumWordLength} letters. You
+						start with {GAME_RULES.initialScore} points and{" "}
+						{GAME_RULES.initialTime} seconds. Each letter earns{" "}
+						{GAME_RULES.pointsPerLetter} points and each accepted word adds{" "}
+						{GAME_RULES.secondsPerWord} seconds. A word scores only once per
+						game. Hints cost {GAME_RULES.hintCost}, shuffles cost{" "}
+						{GAME_RULES.shuffleCost}, and new letters cost{" "}
+						{GAME_RULES.newLettersCost} points.
+						<br />
+						<br />
+						Gösterilen her harfi en fazla göründüğü kadar kullanarak kelimeler
+						oluşturun. Kelimeler en az {GAME_RULES.minimumWordLength} harfli
+						olmalıdır. Oyuna {GAME_RULES.initialScore} puan ve{" "}
+						{GAME_RULES.initialTime} saniye ile başlarsınız. Her harf{" "}
+						{GAME_RULES.pointsPerLetter} puan, kabul edilen her kelime{" "}
+						{GAME_RULES.secondsPerWord} saniye kazandırır. Bir kelime oyun
+						boyunca yalnızca bir kez puan getirir. İpucu {GAME_RULES.hintCost},
+						karıştırma {GAME_RULES.shuffleCost}, yeni harfler{" "}
+						{GAME_RULES.newLettersCost} puandır.
 					</DialogDescription>
 				</DialogHeader>
 			</DialogContent>
