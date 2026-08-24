@@ -8,6 +8,7 @@ import {
 	sanitizeDictionary,
 	selectRoundLetters,
 } from "./gameEngine";
+import dictionary from "../public/dictionary.json";
 
 describe("word normalization", () => {
 	it("handles English and Turkish casing correctly", () => {
@@ -94,4 +95,27 @@ describe("round generation", () => {
 			GAME_RULES.minimumWordsPerRound
 		);
 	});
+});
+
+describe("bundled dictionaries", () => {
+	it.each([
+		["en" as const, dictionary.englishWords, 100],
+		["tr" as const, dictionary.turkishWords, 60],
+	])(
+		"keeps the %s dictionary clean and rich in playable rounds",
+		(language, rawWords, minimumPlayableRounds) => {
+			const words = sanitizeDictionary(rawWords, language);
+			expect(words).toHaveLength(rawWords.length);
+
+			const playableRounds = words.filter(
+				(word) =>
+					Array.from(word).length === GAME_RULES.lettersPerRound &&
+					findFormableWords(Array.from(word), words).length >=
+						GAME_RULES.minimumWordsPerRound
+			);
+			expect(playableRounds.length).toBeGreaterThanOrEqual(
+				minimumPlayableRounds
+			);
+		}
+	);
 });
