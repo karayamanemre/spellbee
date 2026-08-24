@@ -28,6 +28,8 @@ const copy = {
 		tooShort: `Words must have at least ${GAME_RULES.minimumWordLength} letters.`,
 		notFormable: "Use only the available letters, and only as often as shown.",
 		notFound: "That word is not in this game's dictionary.",
+		remaining: (remaining: number, total: number) =>
+			`${remaining} of ${total} words remaining`,
 	},
 	tr: {
 		title: "Kelimeyi Bul!",
@@ -40,6 +42,8 @@ const copy = {
 		tooShort: `Kelimeler en az ${GAME_RULES.minimumWordLength} harfli olmalıdır.`,
 		notFormable: "Yalnızca gösterilen harfleri, gösterildikleri sayıda kullanın.",
 		notFound: "Bu kelime oyun sözlüğünde bulunmuyor.",
+		remaining: (remaining: number, total: number) =>
+			`${total} kelimeden ${remaining} tanesi kaldı`,
 	},
 } as const;
 
@@ -63,6 +67,10 @@ export default function SpellBeeGame({ language }: { language: GameLanguage }) {
 	const allRoundWords = useMemo(
 		() => findFormableWords(letters, dictionary),
 		[letters, dictionary]
+	);
+	const remainingRoundWords = useMemo(
+		() => allRoundWords.filter((candidate) => !guessedWords.has(candidate)),
+		[allRoundWords, guessedWords]
 	);
 
 	const chooseNewLetters = useCallback(() => {
@@ -111,13 +119,13 @@ export default function SpellBeeGame({ language }: { language: GameLanguage }) {
 		}
 	};
 
-	const showError = (message: string) => {
+	const showError = useCallback((message: string) => {
 		setFeedback(message);
 		setIsError(true);
 		window.setTimeout(() => setIsError(false), 600);
-	};
+	}, []);
 
-	const submitWord = (submittedWord: string) => {
+	const submitWord = useCallback((submittedWord: string) => {
 		const result = evaluateSubmission({
 			word: submittedWord,
 			language,
@@ -153,7 +161,7 @@ export default function SpellBeeGame({ language }: { language: GameLanguage }) {
 			setLetters(selectRoundLetters(dictionary, nextGuessed));
 			setHints([]);
 		}
-	};
+	}, [allRoundWords, dictionary, language, letters, showError, text]);
 
 	useEffect(() => {
 		document.documentElement.lang = language;
@@ -161,6 +169,8 @@ export default function SpellBeeGame({ language }: { language: GameLanguage }) {
 
 	useEffect(() => {
 		const handleKeyDown = (event: KeyboardEvent) => {
+			if (!gameStarted || event.ctrlKey || event.metaKey || event.altKey) return;
+
 			const pressed = event.key
 				.normalize("NFC")
 				.toLocaleLowerCase(language === "tr" ? "tr-TR" : "en-US");
@@ -169,10 +179,37 @@ export default function SpellBeeGame({ language }: { language: GameLanguage }) {
 				setActiveLetterIndex(index);
 				window.setTimeout(() => setActiveLetterIndex(null), 160);
 			}
+
+			const target = event.target as HTMLElement | null;
+			if (
+				target?.tagName === "INPUT" ||
+				target?.tagName === "TEXTAREA" ||
+				target?.isContentEditable
+			) {
+				return;
+			}
+
+			if (event.key === "Backspace") {
+				event.preventDefault();
+				setWord((current) => current.slice(0, -1));
+				return;
+			}
+
+			if (event.key === "Enter" && word.length > 0) {
+				event.preventDefault();
+				submitWord(word);
+				setWord("");
+				return;
+			}
+
+			if (Array.from(pressed).length === 1 && /^[a-zçğıöşü]$/u.test(pressed)) {
+				event.preventDefault();
+				setWord((current) => current + pressed);
+			}
 		};
 		window.addEventListener("keydown", handleKeyDown);
 		return () => window.removeEventListener("keydown", handleKeyDown);
-	}, [language, letters]);
+	}, [gameStarted, language, letters, submitWord, word]);
 
 	return (
 		<main className='flex flex-col p-4 w-full max-h-dvh max-w-4xl mx-auto mt-8'>
@@ -239,6 +276,9 @@ export default function SpellBeeGame({ language }: { language: GameLanguage }) {
 							activeLetterIndex={activeLetterIndex}
 							setActiveLetterIndex={setActiveLetterIndex}
 						/>
+						<p className='-mt-12 font-semibold text-cream' aria-live='polite'>
+							{text.remaining(remainingRoundWords.length, allRoundWords.length)}
+						</p>
 						<div className='w-full'>
 							<WordInput onSubmit={submitWord} word={word} setWord={setWord} />
 							<p
