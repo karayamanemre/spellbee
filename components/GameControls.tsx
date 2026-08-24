@@ -72,8 +72,8 @@ const GameControls: React.FC<GameControlsProps> = ({
 		<div className='flex items-center justify-around space-x-1 lg:space-x-4'>
 			<TooltipProvider>
 				<Tooltip delayDuration={10}>
-					<TooltipTrigger>
-						<Popover>
+					<Popover>
+						<TooltipTrigger asChild>
 							<PopoverTrigger asChild>
 								<Button
 									disabled={score < GAME_RULES.hintCost}
@@ -85,34 +85,34 @@ const GameControls: React.FC<GameControlsProps> = ({
 									<Lightbulb />
 								</Button>
 							</PopoverTrigger>
-							<PopoverContent className='bg-cream p-2 rounded-md shadow-[0px_3px_1px] w-max'>
-								{hints.map((hint, index) => (
-										<div
-											key={index}
-											className='flex items-center'>
-											<p className='mr-2'>{hint}</p>
-											{guessedWords.has(hint) && (
-												<span className='text-green-500'>
-													<svg
-														xmlns='http://www.w3.org/2000/svg'
-														fill='none'
-														viewBox='0 0 24 24'
-														strokeWidth={2.5}
-														stroke='currentColor'
-														className='w-6 h-6'>
-														<path
-															strokeLinecap='round'
-															strokeLinejoin='round'
-															d='M4.75 12.25l5 5L19.25 7.75'
-														/>
-													</svg>
-												</span>
-											)}
-										</div>
-									))}
-							</PopoverContent>
-						</Popover>
-					</TooltipTrigger>
+						</TooltipTrigger>
+						<PopoverContent className='bg-cream p-2 rounded-md shadow-[0px_3px_1px] w-max'>
+							{hints.map((hint) => (
+								<div
+									key={hint}
+									className='flex items-center'>
+									<p className='mr-2'>{hint}</p>
+									{guessedWords.has(hint) && (
+										<span className='text-green-500'>
+											<svg
+												xmlns='http://www.w3.org/2000/svg'
+												fill='none'
+												viewBox='0 0 24 24'
+												strokeWidth={2.5}
+												stroke='currentColor'
+												className='w-6 h-6'>
+												<path
+													strokeLinecap='round'
+													strokeLinejoin='round'
+													d='M4.75 12.25l5 5L19.25 7.75'
+												/>
+											</svg>
+										</span>
+									)}
+								</div>
+							))}
+						</PopoverContent>
+					</Popover>
 					<TooltipContent className='bg-cream text-black p-2'>
 						<p>{isTurkish ? "İpucu" : "Hint"} (-{GAME_RULES.hintCost})</p>
 					</TooltipContent>

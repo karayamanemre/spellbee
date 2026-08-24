@@ -118,4 +118,89 @@ describe("bundled dictionaries", () => {
 			);
 		}
 	);
+
+	it("keeps requested common English words available", () => {
+		expect(dictionary.englishWords).toEqual(
+			expect.arrayContaining(["doctor", "tear", "fear", "fare"])
+		);
+	});
+
+	it("uses curated Turkish round words instead of inflected anchors", () => {
+		const removedRoundWords = [
+			"aileler",
+			"bahçeli",
+			"bilgili",
+			"çalışan",
+			"denizli",
+			"dostluk",
+			"duygulu",
+			"gerekli",
+			"güzelce",
+			"ışıklar",
+			"kalemli",
+			"kapılar",
+			"kitapçı",
+			"kolayca",
+			"nedenli",
+			"renkler",
+			"sevgili",
+			"şarkıcı",
+			"tatlıcı",
+			"toplama",
+			"yenilik",
+			"zamanlı",
+			"üretici",
+			"şehirli",
+			"doğrucu",
+			"ormanlı",
+			"adımlar",
+			"ağaçlar",
+			"bilinen",
+			"bugünkü",
+			"çizgili",
+			"doğumlu",
+			"faydalı",
+			"gecelik",
+			"geçerli",
+			"görünen",
+			"güvenli",
+			"içeride",
+			"ileride",
+			"kararlı",
+			"kardeşi",
+			"meraklı",
+			"müzikli",
+			"parçalı",
+			"saygılı",
+			"yararlı",
+		];
+		const curatedRoundWords = [
+			"ahtapot",
+			"akciğer",
+			"akrobat",
+			"anahtar",
+			"anekdot",
+			"antikor",
+			"asansör",
+			"ateşkes",
+			"avokado",
+			"çerçeve",
+			"fabrika",
+			"hastane",
+			"makarna",
+			"manzara",
+			"merhaba",
+			"mobilya",
+			"papatya",
+			"sandviç",
+			"yabancı",
+		];
+
+		expect(dictionary.turkishWords).toEqual(
+			expect.arrayContaining(curatedRoundWords)
+		);
+		for (const word of removedRoundWords) {
+			expect(dictionary.turkishWords).not.toContain(word);
+		}
+	});
 });
