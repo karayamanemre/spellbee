@@ -1,71 +1,84 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, {
+	forwardRef,
+	useEffect,
+	useImperativeHandle,
+	useRef,
+	useState,
+} from "react";
 
 interface TimerProps {
 	initialTime: number;
 	onTimeUp: () => void;
-	addTime: number;
 }
 
-const Timer: React.FC<TimerProps> = ({ initialTime, onTimeUp, addTime }) => {
+export interface TimerHandle {
+	addTime: (seconds: number) => void;
+}
+
+const Timer = forwardRef<TimerHandle, TimerProps>(function Timer(
+	{ initialTime, onTimeUp },
+	ref
+) {
 	const [timeLeft, setTimeLeft] = useState(initialTime);
-	const [showAnimation, setShowAnimation] = useState(false);
 	const [animationAddTime, setAnimationAddTime] = useState(0);
-	const intervalId = useRef<NodeJS.Timeout | null>(null);
-
-	const formatTime = (seconds: number) => {
-		const minutes = Math.floor(seconds / 60);
-		const remainingSeconds = seconds % 60;
-		return `${minutes}:${
-			remainingSeconds < 10 ? `0${remainingSeconds}` : remainingSeconds
-		}`;
-	};
+	const onTimeUpRef = useRef(onTimeUp);
+	const animationTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
 	useEffect(() => {
-		setTimeLeft(initialTime);
-	}, [initialTime]);
+		onTimeUpRef.current = onTimeUp;
+	}, [onTimeUp]);
+
+	useImperativeHandle(ref, () => ({
+		addTime(seconds: number) {
+			if (seconds <= 0) return;
+			setTimeLeft((current) => current + seconds);
+			setAnimationAddTime(seconds);
+			if (animationTimeoutRef.current) {
+				clearTimeout(animationTimeoutRef.current);
+			}
+			animationTimeoutRef.current = setTimeout(
+				() => setAnimationAddTime(0),
+				1000
+			);
+		},
+	}));
 
 	useEffect(() => {
-		intervalId.current = setInterval(() => {
-			setTimeLeft((prevTime) => {
-				if (prevTime <= 1) {
-					clearInterval(intervalId.current as NodeJS.Timeout);
-					onTimeUp();
+		const interval = setInterval(() => {
+			setTimeLeft((current) => {
+				if (current <= 1) {
+					clearInterval(interval);
+					onTimeUpRef.current();
 					return 0;
 				}
-				return prevTime - 1;
+				return current - 1;
 			});
 		}, 1000);
 
 		return () => {
-			if (intervalId.current) {
-				clearInterval(intervalId.current);
+			clearInterval(interval);
+			if (animationTimeoutRef.current) {
+				clearTimeout(animationTimeoutRef.current);
 			}
 		};
-		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
-	useEffect(() => {
-		if (addTime > 0) {
-			setTimeLeft((prevTime) => prevTime + addTime);
-			setAnimationAddTime(addTime);
-			setShowAnimation(true);
-			setTimeout(() => {
-				setShowAnimation(false);
-				setAnimationAddTime(0);
-			}, 1000);
-		}
-	}, [addTime]);
+	const minutes = Math.floor(timeLeft / 60);
+	const seconds = timeLeft % 60;
+	const formattedTime = `${minutes}:${seconds.toString().padStart(2, "0")}`;
 
 	return (
 		<div className='flex items-center justify-center border-4 bg-cream rounded-md p-1 shadow-[0px_3px_1px] border-primary w-32 relative drop-shadow-2xl'>
-			<p className='font-bold text-xl sm:text-3xl'>{formatTime(timeLeft)}</p>
-			{showAnimation && (
+			<p className='font-bold text-xl sm:text-3xl' aria-label={`${timeLeft} seconds remaining`}>
+				{formattedTime}
+			</p>
+			{animationAddTime > 0 && (
 				<p className='time-add-animation text-2xl font-bold'>
 					+{animationAddTime}
 				</p>
 			)}
 		</div>
 	);
-};
+});
 
 export default Timer;
