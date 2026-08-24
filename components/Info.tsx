@@ -9,6 +9,7 @@ import {
 } from "@/components/ui/dialog";
 import { InfoIcon } from "lucide-react";
 import { Button } from "./ui/button";
+import { GAME_RULES } from "@/lib/gameEngine";
 
 const Info = () => {
 	return (
@@ -16,6 +17,7 @@ const Info = () => {
 			<DialogTrigger asChild>
 				<Button
 					size='icon'
+					aria-label='How to play / Nasıl oynanır'
 					className='rounded-md'>
 					<InfoIcon className='text-cream' />
 				</Button>
@@ -29,18 +31,24 @@ const Info = () => {
 					</DialogTitle>
 					<DialogDescription>
 						<p className='text-base lg:text-lg'>
-							Welcome to Spell It! You start with 20 points. Each word must be
-							at least three letters long. Points are awarded based on word
-							length. Using a hint costs 20 points, shuffling letters costs 2
-							points, and getting new letters costs 50 points. Our dictionary is
-							limited, so thank you for your understanding!
+							Build words using each displayed letter no more than once. Words
+							must contain at least {GAME_RULES.minimumWordLength} letters. You
+							start with {GAME_RULES.initialScore} points and {GAME_RULES.initialTime}
+							 seconds. Each letter earns {GAME_RULES.pointsPerLetter} points and
+							 each accepted word adds {GAME_RULES.secondsPerWord} seconds. A word
+							 scores only once per game. Hints cost {GAME_RULES.hintCost}, shuffles
+							 cost {GAME_RULES.shuffleCost}, and new letters cost {GAME_RULES.newLettersCost}
+							 points.
 							<br />
 							<br />
-							Spell It Oyununa hoş geldiniz! 20 puan ile başlarsınız. Her kelime
-							en az üç harfli olmalıdır. Puanlar kelimenin uzunluğuna göre
-							verilir. İpucu kullanmak 20 puan, harfleri karıştırmak 2 puan ve
-							yeni harfler almak 50 puan maliyetindedir. Sözlüğümüz geniş
-							değildir, anlayışınız için teşekkürler!
+							Gösterilen her harfi en fazla göründüğü kadar kullanarak kelimeler
+							oluşturun. Kelimeler en az {GAME_RULES.minimumWordLength} harfli
+							olmalıdır. Oyuna {GAME_RULES.initialScore} puan ve {GAME_RULES.initialTime}
+							 saniye ile başlarsınız. Her harf {GAME_RULES.pointsPerLetter} puan,
+							 kabul edilen her kelime {GAME_RULES.secondsPerWord} saniye kazandırır.
+							 Bir kelime oyun boyunca yalnızca bir kez puan getirir. İpucu
+							 {GAME_RULES.hintCost}, karıştırma {GAME_RULES.shuffleCost}, yeni
+							 harfler {GAME_RULES.newLettersCost} puandır.
 						</p>
 					</DialogDescription>
 				</DialogHeader>
