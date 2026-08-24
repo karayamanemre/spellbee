@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import useGetLanguage from "@/lib/useGetLanguage";
 
 interface LetterHiveProps {
@@ -31,43 +31,21 @@ const LetterHive: React.FC<LetterHiveProps> = ({
 		"bg-brick shadow-[0px_8px_1px_hsl(358_44%_43%)]",
 	];
 
-	const [randomizedLetters, setRandomizedLetters] = useState<StyledLetter[]>(
-		[]
-	);
-
-	const handleTouchStart = (
-		e: React.TouchEvent<HTMLSpanElement>,
-		index: number
-	) => {
-		e.preventDefault();
-		setActiveLetterIndex(index);
-		onLetterClick(randomizedLetters[index].letter);
-	};
-
-	const handleTouchEnd = (e: React.TouchEvent<HTMLSpanElement>) => {
-		e.preventDefault();
-		setActiveLetterIndex(null);
-	};
-
-	useEffect(() => {
-		const newStyledLetters = letters.map((letter, index) => ({
+	const styledLetters: StyledLetter[] = letters.map((letter, index) => ({
 			letter,
-			color: colors[Math.floor(Math.random() * colors.length)],
+			color: colors[index % colors.length],
 			index,
 		}));
-		setRandomizedLetters(newStyledLetters);
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [letters]);
 
 	return (
 		<div className='flex justify-center items-center flex-wrap mb-4 gap-[2px]'>
-			{randomizedLetters.map((styledLetter) => (
-				<span
+			{styledLetters.map((styledLetter) => (
+				<button
+					type='button'
+					aria-label={`${isTurkish ? "Harf" : "Letter"} ${styledLetter.letter}`}
 					key={styledLetter.index}
-					onTouchStart={(e) => handleTouchStart(e, styledLetter.index)}
-					onTouchEnd={handleTouchEnd}
+					onClick={() => onLetterClick(styledLetter.letter)}
 					onMouseDown={() => {
-						onLetterClick(styledLetter.letter);
 						setActiveLetterIndex(styledLetter.index);
 					}}
 					onMouseUp={() => setActiveLetterIndex(null)}
@@ -80,7 +58,7 @@ const LetterHive: React.FC<LetterHiveProps> = ({
 					{isTurkish
 						? styledLetter.letter.toLocaleUpperCase("tr-TR")
 						: styledLetter.letter.toUpperCase()}
-				</span>
+				</button>
 			))}
 		</div>
 	);
