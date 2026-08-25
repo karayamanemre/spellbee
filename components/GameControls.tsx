@@ -54,6 +54,7 @@ const GameControls: React.FC<GameControlsProps> = ({
 }) => {
 	const languageCode = useGetLanguage();
 	const isTurkish = languageCode === "tr";
+	const [isHintOpen, setIsHintOpen] = React.useState(false);
 	const handleShowHints = () => {
 		if (score >= GAME_RULES.hintCost) {
 			const formableWords = findFormableWords(letters, dictionary).filter(
@@ -72,15 +73,17 @@ const GameControls: React.FC<GameControlsProps> = ({
 		<div className='flex items-center justify-around space-x-1 lg:space-x-4'>
 			<TooltipProvider>
 				<Tooltip delayDuration={10}>
-					<Popover>
+					<Popover
+						open={isHintOpen}
+						onOpenChange={(open) => {
+							setIsHintOpen(open);
+							if (open) handleShowHints();
+						}}>
 						<TooltipTrigger asChild>
 							<PopoverTrigger asChild>
 								<Button
-									disabled={score < GAME_RULES.hintCost}
+									disabled={!isHintOpen && score < GAME_RULES.hintCost}
 									aria-label={isTurkish ? "İpucu al" : "Get a hint"}
-									onClick={() => {
-										handleShowHints();
-									}}
 									className='bg-cream p-2 rounded-md shadow-[0px_3px_1px] hover:bg-mustard text-black disabled:cursor-default'>
 									<Lightbulb />
 								</Button>
